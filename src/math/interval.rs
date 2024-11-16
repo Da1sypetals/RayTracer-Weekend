@@ -9,13 +9,6 @@ pub enum Interval {
 }
 
 impl Interval {
-    pub fn interval(lo: f64, hi: f64) -> Self {
-        if lo > hi {
-            panic!("Low should not be greater than high!");
-        }
-        Self::Between { low: lo, high: hi }
-    }
-
     pub fn contains(self, x: f64) -> bool {
         match self {
             Interval::Between { low, high } => low < x && x < high,
