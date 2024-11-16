@@ -1,6 +1,7 @@
 use crate::{
     entity::traits::Entity,
     helpers::types::vec3,
+    materials::material::Material,
     math::panics::{PanickingFloatMethods, PanickingNormalize},
     tracer::ray::hit::Hit,
 };
@@ -8,11 +9,16 @@ use crate::{
 pub struct Sphere {
     center: vec3,
     radius: f64,
+    mat: Material,
 }
 
 impl Sphere {
-    pub fn new(center: vec3, radius: f64) -> Self {
-        Self { center, radius }
+    pub fn new(center: vec3, radius: f64, mat: Material) -> Self {
+        Self {
+            center,
+            radius,
+            mat,
+        }
     }
 }
 
@@ -48,10 +54,16 @@ impl Entity for Sphere {
 
             let pos = ray.orig + ray.dir * t;
             Some(Hit {
+                in_dir: ray.dir,
                 pos,
                 normal: (pos - self.center).p_normalize(),
                 t,
+                material: self.mat,
             })
         }
+    }
+
+    fn material(&self) -> crate::materials::material::Material {
+        self.mat
     }
 }
