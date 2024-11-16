@@ -1,7 +1,7 @@
 use image::RgbImage;
 use nalgebra_glm::UVec2;
 use rand::rngs::ThreadRng;
-use rand_distr::{Uniform, UnitSphere};
+use rand_distr::Uniform;
 use rayon::iter::ParallelIterator;
 use raytrace::{
     camera::camera::CameraBuilder,
@@ -11,7 +11,7 @@ use raytrace::{
         types::{color, vec3},
     },
     materials::material::Material,
-    tracer::tracers::{tracer_lambert::TracerLambert, tracer_mat::TracerMat},
+    tracer::tracers::tracer_mat::TracerMat,
 };
 use std::{f64::consts::PI, sync::Arc};
 

@@ -2,14 +2,14 @@ use crate::{
     camera::camera::Camera,
     entity::scene::Scene,
     helpers::{
-        constants::{IGNORE_HIT_EPS, MAX_NUM_REFLECTION},
+        constants::MAX_NUM_REFLECTION,
         types::{color, vec3},
     },
     math::panics::PanickingNormalize,
     tracer::ray::ray::Ray,
 };
 use rand::rngs::ThreadRng;
-use rand_distr::{Distribution, Uniform, UnitSphere};
+use rand_distr::{Distribution, Uniform};
 
 pub struct TracerMat {
     pub cam: Camera,
