@@ -1,7 +1,10 @@
 use crate::{
     camera::camera::Camera,
     entity::scene::Scene,
-    helpers::types::{color, vec3},
+    helpers::{
+        constants::IGNORE_HIT_EPS,
+        types::{color, vec3},
+    },
     math::panics::PanickingNormalize,
     tracer::ray::ray::Ray,
 };
@@ -21,8 +24,10 @@ impl TracerAa {
         self.sphere_dist.sample(rng).into()
     }
 
-    fn sample_pixel_delta(&self, rng: &mut ThreadRng) -> (f64, f64) {
-        (self.uniform.sample(rng), self.uniform.sample(rng))
+    fn sample_pixel_delta(&self, n_sample: usize, rng: &mut ThreadRng) -> Vec<(f64, f64)> {
+        (0..n_sample)
+            .map(|_| (self.uniform.sample(rng), self.uniform.sample(rng)))
+            .collect()
     }
 
     pub fn color_from_ray(&self, ray: Ray, rng: &mut ThreadRng) -> vec3 {
@@ -32,7 +37,7 @@ impl TracerAa {
             if dir.dot(&hit.normal) < 0.0 {
                 dir = -dir
             }
-            let ray = Ray::new(hit.pos, dir, 0.0);
+            let ray = Ray::new(hit.pos, dir, IGNORE_HIT_EPS);
             0.5 * self.color_from_ray(ray, rng)
         } else {
             // default color based on ix and iy
@@ -42,19 +47,14 @@ impl TracerAa {
     }
 
     pub fn color_at(&self, ix: u32, iy: u32, rng: &mut ThreadRng) -> color {
-        let pixel_orig = self.cam.image_space.pixel_center_at(ix, iy)
-            - self.cam.image_space.xdir * 0.5
-            - self.cam.image_space.ydir * 0.5;
+        let pixel_lefttop = self.cam.image_space.pixel_lefttop_at(ix, iy);
 
         let n_sample = 16;
-        let deltas: Vec<_> = (0..n_sample)
-            .map(|_| self.sample_pixel_delta(rng))
-            .collect();
+        let deltas: Vec<_> = self.sample_pixel_delta(n_sample, rng);
 
         let mut color = vec3::zeros();
         for (dx, dy) in deltas {
-            let pixel =
-                pixel_orig + self.cam.image_space.xdir * dx + self.cam.image_space.ydir * dy;
+            let pixel = pixel_lefttop + self.cam.image_space.pixel_offset(dx, dy);
 
             let v = pixel - self.cam.pos;
             let mag = v.magnitude();

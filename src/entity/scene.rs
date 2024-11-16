@@ -18,7 +18,7 @@ impl Scene {
 
 impl Scene {
     pub fn hit_by(&self, ray: Ray) -> Option<Hit> {
-        let interval = Interval::GreaterThan(ray.tmin);
+        let mut interval = Interval::GreaterThan(ray.tmin);
 
         let mut scene_hit = None;
 
@@ -26,7 +26,7 @@ impl Scene {
         for ent in self.entities.clone() {
             if let Some(hit) = ent.hit_by(ray, interval) {
                 scene_hit = Some(hit);
-                interval.clamp_max(hit.t);
+                interval = interval.clamp_high(hit.t);
             }
         }
 

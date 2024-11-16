@@ -25,10 +25,26 @@ impl Interval {
         }
     }
 
-    pub fn clamp_max(self, max: f64) -> Self {
+    pub fn clamp_high(self, new_high: f64) -> Self {
         match self {
             Interval::Between { low, high } => {
-                let new_high = high.min(max);
+                let res_high = high.min(new_high);
+                if low > res_high {
+                    panic!("Low should not be greater than high after clamping!");
+                }
+                Interval::Between {
+                    low,
+                    high: res_high,
+                }
+            }
+            Interval::LessThan(high) => {
+                let new_high = high.min(new_high);
+                if new_high <= 0.0 {
+                    panic!("High should be greater than 0 after clamping!");
+                }
+                Interval::LessThan(new_high)
+            }
+            Interval::GreaterThan(low) => {
                 if low > new_high {
                     panic!("Low should not be greater than high after clamping!");
                 }
@@ -37,36 +53,33 @@ impl Interval {
                     high: new_high,
                 }
             }
-            Interval::LessThan(high) => {
-                let new_high = high.min(max);
-                if new_high <= 0.0 {
-                    panic!("High should be greater than 0 after clamping!");
-                }
-                Interval::LessThan(new_high)
-            }
-            Interval::GreaterThan(low) => Interval::GreaterThan(low),
-            Interval::Unbounded => Interval::LessThan(max),
+            Interval::Unbounded => Interval::LessThan(new_high),
         }
     }
 
-    pub fn clamp_min(self, min: f64) -> Self {
+    pub fn clamp_low(self, new_low: f64) -> Self {
         match self {
             Interval::Between { low, high } => {
-                let new_low = low.max(min);
+                let res_low = low.max(new_low);
+                if res_low > high {
+                    panic!("Low should not be greater than high after clamping!");
+                }
+                Interval::Between { low: res_low, high }
+            }
+            Interval::LessThan(high) => {
                 if new_low > high {
                     panic!("Low should not be greater than high after clamping!");
                 }
                 Interval::Between { low: new_low, high }
             }
-            Interval::LessThan(high) => Interval::LessThan(high),
             Interval::GreaterThan(low) => {
-                let new_low = low.max(min);
+                let new_low = low.max(new_low);
                 if new_low >= 0.0 {
                     panic!("Low should be less than 0 after clamping!");
                 }
                 Interval::GreaterThan(new_low)
             }
-            Interval::Unbounded => Interval::GreaterThan(min),
+            Interval::Unbounded => Interval::GreaterThan(new_low),
         }
     }
 }

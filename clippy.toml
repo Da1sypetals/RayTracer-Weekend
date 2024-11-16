@@ -1,4 +1,5 @@
 disallowed-methods = [
     # You must use safe normalize that panics on invalid input
     "nalgebra::base::matrix::Matrix::normalize",
+    "f64::sqrt",
 ]

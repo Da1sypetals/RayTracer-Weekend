@@ -1,13 +1,13 @@
 use image::RgbImage;
 use nalgebra_glm::UVec2;
 use rand::rngs::ThreadRng;
-use rand_distr::UnitSphere;
+use rand_distr::{Uniform, UnitSphere};
 use rayon::iter::ParallelIterator;
 use raytrace::{
     camera::camera::CameraBuilder,
     entity::{analytic::sphere::Sphere, scene::Scene, traits::Entity},
     helpers::types::vec3,
-    tracer::versions::tracer_simple::TracerSimple,
+    tracer::versions::tracer_aa::TracerAa,
 };
 use std::{f64::consts::PI, sync::Arc};
 
@@ -25,14 +25,22 @@ fn main() {
 
     let mut ents: Vec<Arc<dyn Entity>> = Vec::new();
     ents.push(Arc::new(Sphere::new(vec3::new(5.0, 0.0, 0.0), 2.0)));
+    ents.push(Arc::new(Sphere::new(vec3::new(5.0, -18.0, 0.0), 16.0)));
 
     let scene = Scene::new(ents);
 
     let mut img = RgbImage::new(cam.resolution.x, cam.resolution.y);
-    let tracer = TracerSimple {
+    // let tracer = TracerSimple {
+    //     cam,
+    //     scene,
+    //     sphere_dist: UnitSphere,
+    // };
+
+    let tracer = TracerAa {
         cam,
         scene,
         sphere_dist: UnitSphere,
+        uniform: Uniform::new(0.0, 1.0),
     };
 
     img.par_enumerate_pixels_mut().for_each(|(ix, iy, px)| {
