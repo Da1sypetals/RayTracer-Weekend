@@ -75,4 +75,13 @@ impl Interval {
             Interval::Unbounded => Interval::GreaterThan(new_low),
         }
     }
+
+    pub fn min(&self) -> Option<f64> {
+        match self {
+            Interval::Between { low, high: _ } => Some(*low),
+            Interval::GreaterThan(low) => Some(*low),
+            Interval::LessThan(_) => None,
+            Interval::Unbounded => None,
+        }
+    }
 }

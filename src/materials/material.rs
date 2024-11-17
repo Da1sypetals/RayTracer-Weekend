@@ -14,4 +14,7 @@ pub enum Material {
         /// radius of fuzz sphere.
         fuzz: f64,
     },
+    Dielectric {
+        eta: f64,
+    },
 }

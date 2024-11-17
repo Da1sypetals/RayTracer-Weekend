@@ -3,7 +3,7 @@ use crate::{
     helpers::types::vec3,
     materials::material::Material,
     math::panics::{PanickingFloatMethods, PanickingNormalize},
-    tracer::ray::hit::Hit,
+    tracer::ray::hit::{Hit, Normal},
 };
 
 pub struct Sphere {
@@ -53,10 +53,17 @@ impl Entity for Sphere {
             };
 
             let pos = ray.orig + ray.dir * t;
+            let v = ray.orig + ray.dir * interval.min().expect("Ray should have minimum t!")
+                - self.center;
+            let normal = if v.norm_squared() > self.radius * self.radius {
+                Normal::Outward((pos - self.center).p_normalize())
+            } else {
+                Normal::Inward((self.center - pos).p_normalize())
+            };
             Some(Hit {
                 in_dir: ray.dir,
                 pos,
-                normal: (pos - self.center).p_normalize(),
+                normal,
                 t,
                 material: self.mat,
             })

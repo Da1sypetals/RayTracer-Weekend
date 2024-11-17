@@ -1,4 +1,5 @@
 use image::RgbImage;
+use indicatif::ParallelProgressIterator;
 use nalgebra_glm::UVec2;
 use rand::rngs::ThreadRng;
 use rand_distr::Uniform;
@@ -35,9 +36,6 @@ fn main() {
     let green = Material::Lambertian {
         albedo: color::new(0.1, 0.5, 0.2),
     };
-    let mirror = Material::Metal {
-        albedo: color::new(0.8, 0.8, 0.8),
-    };
     let mirror_yellow = Material::Metal {
         albedo: color::new(0.8, 0.6, 0.2),
     };
@@ -45,21 +43,22 @@ fn main() {
         albedo: color::new(0.58, 0.23, 0.72),
         fuzz: 0.1,
     };
+    let transp = Material::Dielectric { eta: 0.75 };
 
     let mut ents: Vec<Arc<dyn Entity>> = Vec::new();
-    ents.push(Arc::new(Sphere::new(vec3::new(5.0, 0.0, 0.0), 1.5, blue)));
-    ents.push(Arc::new(Sphere::new(
+    let center = ents.push(Arc::new(Sphere::new(vec3::new(5.0, 0.0, 0.0), 1.5, blue)));
+    let left_top = ents.push(Arc::new(Sphere::new(
         vec3::new(5.0, 1.5, -1.5),
-        0.5,
-        mirror_yellow,
-    )));
-    ents.push(Arc::new(Sphere::new(vec3::new(5.0, 0.0, 3.5), 2.0, mirror)));
-    ents.push(Arc::new(Sphere::new(
-        vec3::new(5.0, -0.2, -3.5),
-        1.5,
+        0.6,
         fuzz_purple,
     )));
-    ents.push(Arc::new(Sphere::new(
+    let right = ents.push(Arc::new(Sphere::new(vec3::new(5.0, 0.0, 3.5), 2.0, transp)));
+    let left = ents.push(Arc::new(Sphere::new(
+        vec3::new(5.0, -0.6, -3.5),
+        1.5,
+        mirror_yellow,
+    )));
+    let ground = ents.push(Arc::new(Sphere::new(
         vec3::new(5.0, -18.0, 0.0),
         16.0,
         green,
@@ -78,16 +77,16 @@ fn main() {
         reflect_ratio: 0.5,
     };
 
-    img.par_enumerate_pixels_mut().for_each(|(ix, iy, px)| {
-        let mut rng = ThreadRng::default();
+    // ######################## Main work ########################
+    img.par_enumerate_pixels_mut()
+        .progress()
+        .for_each(|(ix, iy, px)| {
+            let mut rng = ThreadRng::default();
 
-        let color = tracer.color_at(ix, iy, &mut rng).to_gamma();
+            let color = tracer.color_at(ix, iy, &mut rng).to_gamma();
 
-        let r = (color.r * 255.0) as u8;
-        let g = (color.g * 255.0) as u8;
-        let b = (color.b * 255.0) as u8;
-        *px = [r, g, b].into();
-    });
+            *px = color.quantize_u8().into()
+        });
 
     img.save("traced.png").unwrap();
 }

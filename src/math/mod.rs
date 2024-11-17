@@ -2,4 +2,6 @@
 
 pub mod interval;
 pub mod panics;
-pub mod sphere;
+pub mod sphere_distribution;
+pub mod ray;
+
