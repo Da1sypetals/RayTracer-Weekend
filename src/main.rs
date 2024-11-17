@@ -5,7 +5,7 @@ use rand::rngs::ThreadRng;
 use rand_distr::Uniform;
 use rayon::iter::ParallelIterator;
 use raytrace::{
-    camera::camera::CameraBuilder,
+    camera::camera::{CameraBuilder, CameraModel},
     entity::{analytic::sphere::Sphere, scene::Scene, traits::Entity},
     helpers::{
         traits::Color,
@@ -18,6 +18,16 @@ use std::{f64::consts::PI, sync::Arc};
 
 fn main() {
     let yfov = 75.0 / 360.0 * 2.0 * PI;
+    // let cam = CameraBuilder {
+    //     resolution: UVec2::new(1920, 1080),
+    //     yfov,
+    //     vd: 2.0,
+    //     pos: vec3::zeros(),
+    //     lookat: vec3::new(1.0, 0.0, 0.0),
+    //     up: vec3::new(0.0, 1.0, 0.0),
+    //     model: CameraModel::Pinhole,
+    // }
+    // .build();
     let cam = CameraBuilder {
         resolution: UVec2::new(1920, 1080),
         yfov,
@@ -25,6 +35,7 @@ fn main() {
         pos: vec3::zeros(),
         lookat: vec3::new(1.0, 0.0, 0.0),
         up: vec3::new(0.0, 1.0, 0.0),
+        model: CameraModel::Lens { radius: 0.05 },
     }
     .build();
 
@@ -44,6 +55,7 @@ fn main() {
         fuzz: 0.1,
     };
     let transp = Material::Dielectric { eta: 0.75 };
+    let transp_inner = Material::Dielectric { eta: 1.33 };
 
     let mut ents: Vec<Arc<dyn Entity>> = Vec::new();
     let center = ents.push(Arc::new(Sphere::new(vec3::new(5.0, 0.0, 0.0), 1.5, blue)));
@@ -53,6 +65,11 @@ fn main() {
         fuzz_purple,
     )));
     let right = ents.push(Arc::new(Sphere::new(vec3::new(5.0, 0.0, 3.5), 2.0, transp)));
+    let right_inner = ents.push(Arc::new(Sphere::new(
+        vec3::new(5.0, 0.0, 3.5),
+        1.6,
+        transp_inner,
+    )));
     let left = ents.push(Arc::new(Sphere::new(
         vec3::new(5.0, -0.6, -3.5),
         1.5,
@@ -73,7 +90,6 @@ fn main() {
     let tracer = TracerMat {
         cam,
         scene,
-        uniform: Uniform::new(0.0, 1.0),
         reflect_ratio: 0.5,
     };
 

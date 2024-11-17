@@ -17,3 +17,9 @@ impl RayDir for vec3 {
         r_out_perp + r_out_parallel
     }
 }
+
+pub fn reflectance(cosine: f64, eta_ratio: f64) -> f64 {
+    let mut r0 = (1.0 - eta_ratio) / (1.0 + eta_ratio);
+    r0 *= r0;
+    r0 + (1.0 - r0) * (1.0 - cosine).powi(5)
+}

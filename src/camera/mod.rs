@@ -1,4 +1,5 @@
 pub mod camera;
+pub mod image_space;
 
 #[cfg(test)]
 pub mod tests {
@@ -6,7 +7,7 @@ pub mod tests {
 
     use glm::UVec2;
 
-    use crate::helpers::types::vec3;
+    use crate::{camera::camera::CameraModel, helpers::types::vec3};
 
     use super::camera::CameraBuilder;
 
@@ -20,6 +21,7 @@ pub mod tests {
             pos: vec3::zeros(),
             lookat: vec3::new(1.0, 0.0, 0.0),
             up: vec3::new(0.0, 1.0, 0.0),
+            model: CameraModel::Pinhole,
         }
         .build();
 

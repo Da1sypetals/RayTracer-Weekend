@@ -5,17 +5,14 @@ use crate::{
         constants::MAX_NUM_REFLECTION,
         types::{color, vec3},
     },
-    math::panics::PanickingNormalize,
+    math::{distributions::sample_uniform_01, panics::PanickingNormalize},
     tracer::ray::ray::Ray,
 };
 use rand::rngs::ThreadRng;
-use rand_distr::{Distribution, Uniform};
 
 pub struct TracerMat {
     pub cam: Camera,
     pub scene: Scene,
-
-    pub uniform: Uniform<f64>,
 
     pub reflect_ratio: f64,
 }
@@ -23,7 +20,7 @@ pub struct TracerMat {
 impl TracerMat {
     fn sample_pixel_delta(&self, spp: usize, rng: &mut ThreadRng) -> Vec<(f64, f64)> {
         (0..spp)
-            .map(|_| (self.uniform.sample(rng), self.uniform.sample(rng)))
+            .map(|_| (sample_uniform_01(rng), sample_uniform_01(rng)))
             .collect()
     }
 

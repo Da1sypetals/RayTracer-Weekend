@@ -5,7 +5,11 @@ use crate::{
         types::{color, vec3},
     },
     materials::material::Material,
-    math::{panics::PanickingFloatMethods, ray::RayDir, sphere_distribution::sample_on_sphere},
+    math::{
+        distributions::{sample_on_sphere, sample_uniform_01},
+        panics::PanickingFloatMethods,
+        ray::{reflectance, RayDir},
+    },
 };
 use rand::rngs::ThreadRng;
 
@@ -74,7 +78,9 @@ impl Hit {
                 let cosine = normal.dot(&-self.in_dir).min(1.0);
                 let sine = (1.0 - cosine * cosine).p_sqrt();
 
-                let reflected_dir = if eta_ratio * sine > 1.0 {
+                let reflected_dir = if eta_ratio * sine > 1.0
+                    || reflectance(cosine, eta_ratio) > sample_uniform_01(rng)
+                {
                     // total internal reflection
                     self.in_dir.reflected_by(&normal)
                 } else {
