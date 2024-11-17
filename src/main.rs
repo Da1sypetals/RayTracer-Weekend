@@ -2,22 +2,22 @@ use image::RgbImage;
 use indicatif::ParallelProgressIterator;
 use nalgebra_glm::UVec2;
 use rand::rngs::ThreadRng;
-use rand_distr::Uniform;
 use rayon::iter::ParallelIterator;
 use raytrace::{
-    camera::camera::{CameraBuilder, CameraModel},
+    camera::camera_lens::LensCameraBuilder,
     entity::{analytic::sphere::Sphere, scene::Scene, traits::Entity},
     helpers::{
         traits::Color,
         types::{color, vec3},
     },
     materials::material::Material,
-    tracer::tracers::tracer_mat::TracerMat,
+    math::angles::deg2rad,
+    tracer::tracers::tracer_lens::TracerLens,
 };
-use std::{f64::consts::PI, sync::Arc};
+use std::sync::Arc;
 
 fn main() {
-    let yfov = 75.0 / 360.0 * 2.0 * PI;
+    let yfov = deg2rad(75.0);
     // let cam = CameraBuilder {
     //     resolution: UVec2::new(1920, 1080),
     //     yfov,
@@ -28,14 +28,14 @@ fn main() {
     //     model: CameraModel::Pinhole,
     // }
     // .build();
-    let cam = CameraBuilder {
+    let cam = LensCameraBuilder {
+        defocus_angle: deg2rad(3.0),
         resolution: UVec2::new(1920, 1080),
         yfov,
-        vd: 2.0,
+        vd: 4.0,
         pos: vec3::zeros(),
         lookat: vec3::new(1.0, 0.0, 0.0),
         up: vec3::new(0.0, 1.0, 0.0),
-        model: CameraModel::Lens { radius: 0.05 },
     }
     .build();
 
@@ -58,7 +58,7 @@ fn main() {
     let transp_inner = Material::Dielectric { eta: 1.33 };
 
     let mut ents: Vec<Arc<dyn Entity>> = Vec::new();
-    let center = ents.push(Arc::new(Sphere::new(vec3::new(5.0, 0.0, 0.0), 1.5, blue)));
+    let center = ents.push(Arc::new(Sphere::new(vec3::new(4.0, 0.0, 0.0), 1.5, blue)));
     let left_top = ents.push(Arc::new(Sphere::new(
         vec3::new(5.0, 1.5, -1.5),
         0.6,
@@ -66,12 +66,12 @@ fn main() {
     )));
     let right = ents.push(Arc::new(Sphere::new(vec3::new(5.0, 0.0, 3.5), 2.0, transp)));
     let right_inner = ents.push(Arc::new(Sphere::new(
-        vec3::new(5.0, 0.0, 3.5),
+        vec3::new(6.0, 0.0, 3.5),
         1.6,
         transp_inner,
     )));
     let left = ents.push(Arc::new(Sphere::new(
-        vec3::new(5.0, -0.6, -3.5),
+        vec3::new(7.0, -0.6, -3.5),
         1.5,
         mirror_yellow,
     )));
@@ -87,7 +87,7 @@ fn main() {
 
     let mut img = RgbImage::new(cam.resolution.x, cam.resolution.y);
 
-    let tracer = TracerMat {
+    let tracer = TracerLens {
         cam,
         scene,
         reflect_ratio: 0.5,

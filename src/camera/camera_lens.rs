@@ -1,11 +1,14 @@
+use super::image_space::ImageSpace;
 use crate::{
     helpers::types::{vec2, vec3},
-    math::panics::PanickingNormalize,
+    math::{distributions::sample_on_disk, panics::PanickingNormalize},
 };
+use rand::rngs::ThreadRng;
 
-use super::image_space::ImageSpace;
+pub struct LensCameraBuilder {
+    /// Lens
+    pub defocus_angle: f64,
 
-pub struct CameraBuilder {
     pub resolution: glm::UVec2,
     pub yfov: f64,
     pub vd: f64,
@@ -17,13 +20,16 @@ pub struct CameraBuilder {
     pub up: vec3,
 }
 
-impl CameraBuilder {
-    pub fn build(self) -> Camera {
-        Camera::new(self)
+impl LensCameraBuilder {
+    pub fn build(self) -> LensCamera {
+        LensCamera::new(self)
     }
 }
 
-pub struct Camera {
+pub struct LensCamera {
+    /// Lens
+    radius: f64,
+
     pub resolution: glm::UVec2,
     /// ### In radians
     pub yfov: f64,
@@ -32,7 +38,7 @@ pub struct Camera {
     /// ### Image span (x, y) in real world coords unit
     pub image_span: vec2,
 
-    pub pos: vec3,
+    pos: vec3,
 
     // directions
     pub lookat: vec3,
@@ -42,8 +48,8 @@ pub struct Camera {
     pub image_space: ImageSpace,
 }
 
-impl Camera {
-    pub fn new(cam: CameraBuilder) -> Self {
+impl LensCamera {
+    pub fn new(cam: LensCameraBuilder) -> Self {
         let mut cam = cam;
         cam.lookat = cam.lookat.p_normalize();
         cam.up = cam.up.p_normalize();
@@ -65,6 +71,7 @@ impl Camera {
         };
 
         Self {
+            radius: cam.vd * (cam.defocus_angle * 0.5).tan(),
             resolution: cam.resolution,
             yfov: cam.yfov,
             pos: cam.pos,
@@ -76,5 +83,11 @@ impl Camera {
             right,
             image_space,
         }
+    }
+
+    pub fn sample_position(&self, rng: &mut ThreadRng) -> vec3 {
+        let delta_unit = sample_on_disk(rng);
+        let delta = delta_unit.x * self.right + delta_unit.y * self.up;
+        self.pos + self.radius * delta
     }
 }

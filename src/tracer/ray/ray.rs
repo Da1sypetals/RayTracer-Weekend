@@ -1,4 +1,4 @@
-use crate::{camera::camera::Camera, helpers::types::vec3, math::panics::PanickingNormalize};
+use crate::{helpers::types::vec3, math::panics::PanickingNormalize};
 
 #[derive(Clone, Copy, Debug)]
 pub struct Ray {
@@ -18,17 +18,5 @@ impl Ray {
 
     pub fn at(&self, t: f64) -> vec3 {
         self.orig + t * self.dir
-    }
-}
-
-impl Camera {
-    /// ### Maps image space coords to (ray, t_min)
-    pub fn ray_at(&self, ix: u32, iy: u32) -> Ray {
-        let pixel = self.image_space.pixel_center_at(ix, iy);
-
-        let v = pixel - self.pos;
-        let mag = v.magnitude();
-        let dir = v.p_normalize();
-        Ray::new(self.pos, dir, mag)
     }
 }
