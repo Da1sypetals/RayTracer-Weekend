@@ -1,37 +1,43 @@
 materials_path = "config/materials.toml"
 
 [[entities]]
+# center
 type = "Sphere"
 material = "blue"
 center = [4.0, 0.0, 0.0]
 radius = 1.5
 
 [[entities]]
+# left top
 type = "Sphere"
 material = "fuzz_purple"
-center = [5.0, 1.5, -1.5]
+center = [4.0, 1.5, -1.5]
 radius = 0.6
 
 [[entities]]
+# right
 type = "Sphere"
 material = "transp"
-center = [5.0, 0.0, 3.5]
+center = [3.0, 0.0, 3.5]
 radius = 2.0
 
 [[entities]]
+# right inner
 type = "Sphere"
 material = "transp_inner"
-center = [6.0, 0.0, 3.5]
+center = [3.0, 0.0, 3.5]
 radius = 1.6
 
 [[entities]]
+# left
 type = "Sphere"
 material = "mirror_yellow"
-center = [7.0, -0.6, -3.5]
+center = [4.0, 0.0, -3.0]
 radius = 1.5
 
 [[entities]]
+# ground
 type = "Sphere"
 material = "green"
-center = [5.0, -18.0, 0.0]
-radius = 16.0
+center = [5.0, -32.0, 0.0]
+radius = 30.0
