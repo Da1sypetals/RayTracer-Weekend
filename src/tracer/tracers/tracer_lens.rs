@@ -13,8 +13,6 @@ use rand::rngs::ThreadRng;
 pub struct TracerLens {
     pub cam: LensCamera,
     pub scene: Scene,
-
-    pub reflect_ratio: f64,
 }
 
 impl TracerLens {

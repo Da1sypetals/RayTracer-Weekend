@@ -1,17 +1,21 @@
+use std::fs;
+
 use super::image_space::ImageSpace;
 use crate::{
     helpers::types::{vec2, vec3},
-    math::{distributions::sample_on_disk, panics::PanickingNormalize},
+    math::{angles::deg2rad, distributions::sample_on_disk, panics::PanickingNormalize},
 };
 use rand::rngs::ThreadRng;
+use serde::{Deserialize, Serialize};
 
+#[derive(Serialize, Deserialize)]
 pub struct LensCameraBuilder {
     /// Lens
     pub defocus_angle: f64,
 
     pub resolution: glm::UVec2,
     pub yfov: f64,
-    pub vd: f64,
+    pub viewport_distance: f64,
 
     pub pos: vec3,
 
@@ -21,6 +25,13 @@ pub struct LensCameraBuilder {
 }
 
 impl LensCameraBuilder {
+    pub fn configured(path: &str) -> anyhow::Result<Self> {
+        let mut res: LensCameraBuilder = toml::from_str(&fs::read_to_string(path)?)?;
+        res.yfov = deg2rad(res.yfov);
+        res.defocus_angle = deg2rad(res.defocus_angle);
+        Ok(res)
+    }
+
     pub fn build(self) -> LensCamera {
         LensCamera::new(self)
     }
@@ -57,7 +68,7 @@ impl LensCamera {
         // camera
         let right = cam.lookat.cross(&cam.up).p_normalize();
 
-        let yspan = 2.0 * cam.vd * (0.5 * cam.yfov).tan();
+        let yspan = 2.0 * cam.viewport_distance * (0.5 * cam.yfov).tan();
         let xspan = yspan * (cam.resolution.x as f64) / cam.resolution.y as f64;
         let image_span = vec2::new(xspan, yspan);
 
@@ -66,18 +77,19 @@ impl LensCamera {
             xdir: right,
             ydir: -cam.up,
             //   cam pos  +  viewport to cam dist -     half Y      - half X
-            orig: cam.pos + cam.lookat * cam.vd + cam.up * yspan * 0.5 - right * xspan * 0.5,
+            orig: cam.pos + cam.lookat * cam.viewport_distance + cam.up * yspan * 0.5
+                - right * xspan * 0.5,
             delta: yspan / cam.resolution.y as f64,
         };
 
         Self {
-            radius: cam.vd * (cam.defocus_angle * 0.5).tan(),
+            radius: cam.viewport_distance * (cam.defocus_angle * 0.5).tan(),
             resolution: cam.resolution,
             yfov: cam.yfov,
             pos: cam.pos,
             lookat: cam.lookat,
             up: cam.up,
-            vd: cam.vd,
+            vd: cam.viewport_distance,
 
             image_span,
             right,

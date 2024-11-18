@@ -1,0 +1,30 @@
+[[materials]]
+name = "blue"
+type = "Lambertian"
+albedo = [0.1, 0.2, 0.5]
+
+[[materials]]
+name = "green"
+type = "Lambertian"
+albedo = [0.1, 0.5, 0.2]
+
+[[materials]]
+name = "mirror_yellow"
+type = "Metal"
+albedo = [0.8, 0.6, 0.2]
+
+[[materials]]
+name = "fuzz_purple"
+type = "FuzzedMetal"
+albedo = [0.58, 0.23, 0.72]
+fuzz = 0.1
+
+[[materials]]
+name = "transp"
+type = "Dielectric"
+eta = 0.75
+
+[[materials]]
+name = "transp_inner"
+type = "Dielectric"
+eta = 1.33

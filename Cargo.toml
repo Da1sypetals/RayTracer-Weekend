@@ -7,12 +7,20 @@ edition = "2021"
 name = "raytrace-run"
 path = "src/main.rs"
 
+[[bin]]
+name = "test-toml"
+path = "src/test.rs"
+
 [dependencies]
 nalgebra-glm = "0.19.0"
-nalgebra = "0.33.2"
+nalgebra = { version = "0.33.2", features = ["serde", "serde-serialize"] }
 rand = "0.8.5"
 rand_distr = "0.4.3"
 image = { version = "0.25.5", features = ["rayon"] }
 rayon = "1.10.0"
 itertools = "0.13.0"
 indicatif = { version = "0.17.9", features = ["rayon"] }
+serde = { version = "1.0.215", features = ["derive"] }
+toml = "0.8.19"
+anyhow = "1.0.93"
+thiserror = "2.0.3"

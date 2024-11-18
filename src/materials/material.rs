@@ -1,6 +1,9 @@
+use serde::{Deserialize, Serialize};
+
 use crate::helpers::types::color;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+#[serde(tag = "type")]
 pub enum Material {
     Lambertian {
         albedo: color,

@@ -1,0 +1,12 @@
+# in degrees
+defocus_angle = 0.8
+
+resolution = [1600, 900]
+# in degrees
+yfov = 75
+viewport_distance = 4.0
+
+pos = [0, 0, 0]
+
+up = [0, 1, 0]
+lookat = [1, 0, 0]
