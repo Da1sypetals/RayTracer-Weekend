@@ -1,6 +1,4 @@
 use std::{collections::BTreeMap, fs};
-
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use toml::Value;
 
 use crate::materials::material::Material;
@@ -36,7 +34,7 @@ impl From<Value> for MaterialMap {
                     .expect("Expect a name")
                     .as_str()
                     .expect("Expect name to be string");
-                
+
                 let mat_type = mat
                     .get("type")
                     .expect("Expect a material type")
