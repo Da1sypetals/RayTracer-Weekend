@@ -1,5 +1,5 @@
 use crate::{
-    camera::camera_lens::LensCamera,
+    camera::camera_lens::{LensCamera, LensCameraBuilder},
     entity::scene::Scene,
     helpers::{
         constants::MAX_NUM_REFLECTION,
@@ -9,10 +9,35 @@ use crate::{
     tracer::ray::ray::Ray,
 };
 use rand::rngs::ThreadRng;
+use serde::{Deserialize, Serialize};
+use std::fs;
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct TracerLensBuilder {
+    camera: String,
+    scene: String,
+    spp: usize,
+}
 
 pub struct TracerLens {
     pub cam: LensCamera,
     pub scene: Scene,
+    pub spp: usize,
+}
+
+impl TracerLens {
+    pub fn configured(path: &str) -> anyhow::Result<Self> {
+        let tracer: TracerLensBuilder =
+            toml::from_str(fs::read_to_string(path).unwrap().as_str()).unwrap();
+
+        let cam = LensCameraBuilder::configured(&tracer.camera)?.build();
+        let scene = Scene::configured(&tracer.scene)?;
+        Ok(Self {
+            cam,
+            scene,
+            spp: tracer.spp,
+        })
+    }
 }
 
 impl TracerLens {
@@ -25,8 +50,7 @@ impl TracerLens {
     pub fn color_at(&self, ix: u32, iy: u32, rng: &mut ThreadRng) -> color {
         let pixel_lefttop = self.cam.image_space.pixel_lefttop_at(ix, iy);
 
-        let spp = 16;
-        let deltas: Vec<_> = self.sample_pixel_delta(spp, rng);
+        let deltas: Vec<_> = self.sample_pixel_delta(self.spp, rng);
 
         let mut color = vec3::zeros();
         for (dx, dy) in deltas {
@@ -41,7 +65,7 @@ impl TracerLens {
             color += self.color_from_ray(ray, rng, 0);
         }
 
-        color / spp as f64
+        color / self.spp as f64
     }
 }
 

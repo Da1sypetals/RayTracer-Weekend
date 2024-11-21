@@ -2,15 +2,10 @@ use image::RgbImage;
 use indicatif::ParallelProgressIterator;
 use rand::rngs::ThreadRng;
 use rayon::iter::ParallelIterator;
-use raytrace::{
-    camera::camera_lens::LensCameraBuilder, entity::scene::Scene, helpers::traits::Color,
-    tracer::tracers::tracer_lens::TracerLens,
-};
+use raytrace::{helpers::traits::Color, tracer::tracers::tracer_lens::TracerLens};
 
 fn main() -> anyhow::Result<()> {
-    let cam = LensCameraBuilder::configured("config/camera.toml")?.build();
-    let scene = Scene::configured("config/scene.toml").unwrap();
-    let tracer = TracerLens { cam, scene };
+    let tracer = TracerLens::configured("config/tracer.toml")?;
 
     // ########################### Main work ###########################
     let mut img = RgbImage::new(tracer.cam.resolution.x, tracer.cam.resolution.y);
