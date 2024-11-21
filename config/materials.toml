@@ -1,7 +1,11 @@
+# [[materials]]
+# name = "blue"
+# type = "Lambertian"
+# albedo = [0.1, 0.2, 0.5]
 [[materials]]
 name = "blue"
-type = "Lambertian"
-albedo = [0.1, 0.2, 0.5]
+type = "Dielectric"
+eta = 1.33
 
 [[materials]]
 name = "green"
