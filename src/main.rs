@@ -19,7 +19,7 @@ fn main() -> anyhow::Result<()> {
         });
     // ######################### Main work end #########################
 
-    img.save("traced.png").unwrap();
+    img.save(tracer.out_path).unwrap();
 
     Ok(())
 }

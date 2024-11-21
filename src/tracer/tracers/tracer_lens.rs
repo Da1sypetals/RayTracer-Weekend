@@ -17,25 +17,28 @@ pub struct TracerLensBuilder {
     camera: String,
     scene: String,
     spp: usize,
+    out_path: String,
 }
 
 pub struct TracerLens {
     pub cam: LensCamera,
     pub scene: Scene,
     pub spp: usize,
+    pub out_path: String,
 }
 
 impl TracerLens {
     pub fn configured(path: &str) -> anyhow::Result<Self> {
-        let tracer: TracerLensBuilder =
+        let builder: TracerLensBuilder =
             toml::from_str(fs::read_to_string(path).unwrap().as_str()).unwrap();
 
-        let cam = LensCameraBuilder::configured(&tracer.camera)?.build();
-        let scene = Scene::configured(&tracer.scene)?;
+        let cam = LensCameraBuilder::configured(&builder.camera)?.build();
+        let scene = Scene::configured(&builder.scene)?;
         Ok(Self {
             cam,
             scene,
-            spp: tracer.spp,
+            spp: builder.spp,
+            out_path: builder.out_path,
         })
     }
 }

@@ -1,3 +1,4 @@
 camera = "config/camera.toml"
 scene = "config/scene.toml"
-spp.64
+spp = 16
+out_path = "output.png"
