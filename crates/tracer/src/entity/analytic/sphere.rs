@@ -1,7 +1,9 @@
+use std::f64::consts::{PI, TAU};
+
 use crate::{
     entity::traits::Entity,
     helpers::types::vec3,
-    materials::material::Material,
+    materials::material::{FragMaterial, Material},
     math::panics::{PanickingFloatMethods, PanickingNormalize},
     tracer::ray::hit::{Hit, Normal},
 };
@@ -61,17 +63,63 @@ impl Entity for Sphere {
             } else {
                 Normal::Inward((self.center - pos).p_normalize())
             };
+
+            let material: FragMaterial = match self.mat.clone().try_into() {
+                Ok(fmat) => fmat,
+                Err(_) => self.frag_material(pos),
+            };
             Some(Hit {
                 in_dir: ray.dir,
                 pos,
                 normal,
                 t,
-                material: self.mat,
+                material,
             })
         }
     }
 
     fn material(&self) -> crate::materials::material::Material {
-        self.mat
+        self.mat.clone()
+    }
+}
+
+impl Sphere {
+    #[inline]
+    fn spherical_coords(&self, hitpos: vec3) -> (f64, f64) {
+        let v = hitpos - self.center;
+        ((v.y / v.p_magnitude()).acos(), f64::atan2(v.z, v.x) + PI)
+    }
+
+    fn frag_material(&self, hitpos: vec3) -> FragMaterial {
+        match &self.mat {
+            Material::PolarChecker {
+                color1,
+                color2,
+                ntheta,
+                nphi,
+            } => {
+                let dtheta = PI / *ntheta as f64;
+                let dphi = TAU / *nphi as f64;
+
+                let (theta, phi) = self.spherical_coords(hitpos);
+                let colored = (theta / dtheta) as u32 % 2 == (phi / dphi) as u32 % 2;
+
+                if colored {
+                    FragMaterial::Lambertian { albedo: *color1 }
+                } else {
+                    FragMaterial::Lambertian { albedo: *color2 }
+                }
+            }
+
+            Material::Texture { map } => {
+                let (theta, phi) = self.spherical_coords(hitpos);
+                let x = phi / TAU;
+                let y = theta / PI;
+                FragMaterial::Lambertian {
+                    albedo: map.query(x, y),
+                }
+            }
+            _ => unreachable!(),
+        }
     }
 }

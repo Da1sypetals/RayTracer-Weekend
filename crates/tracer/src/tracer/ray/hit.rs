@@ -4,7 +4,7 @@ use crate::{
         constants::IGNORE_HIT_EPS,
         types::{color, vec3},
     },
-    materials::material::Material,
+    materials::material::FragMaterial,
     math::{
         distributions::{sample_on_sphere, sample_uniform_01},
         panics::PanickingFloatMethods,
@@ -21,11 +21,11 @@ pub enum Normal {
     Inward(vec3),
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct Hit {
     pub in_dir: vec3,
     pub pos: vec3,
-    pub material: Material,
+    pub material: FragMaterial,
     pub t: f64,
 
     // Normal
@@ -37,7 +37,7 @@ impl Hit {
     /// Returns attenuation and scattered ray (by probabilistic means)
     pub fn scatter(&self, rng: &mut ThreadRng) -> Option<(color, Ray)> {
         match self.material {
-            Material::Lambertian { albedo } => {
+            FragMaterial::Lambertian { albedo } => {
                 if let Normal::Outward(normal) = self.normal {
                     let dir = normal + sample_on_sphere(rng);
                     let scattered_ray = Ray::new(self.pos, dir, IGNORE_HIT_EPS);
@@ -47,7 +47,7 @@ impl Hit {
                     None
                 }
             }
-            Material::Metal { albedo } => {
+            FragMaterial::Metal { albedo } => {
                 if let Normal::Outward(normal) = self.normal {
                     let reflected_dir = self.in_dir.reflected_by(&normal);
 
@@ -58,7 +58,7 @@ impl Hit {
                     None
                 }
             }
-            Material::FuzzedMetal { albedo, fuzz } => {
+            FragMaterial::FuzzedMetal { albedo, fuzz } => {
                 if let Normal::Outward(normal) = self.normal {
                     let dir = (self.in_dir.reflected_by(&normal)
                         + fuzz * sample_on_sphere(rng))
@@ -71,7 +71,7 @@ impl Hit {
                     None
                 }
             }
-            Material::Dielectric { eta } => {
+            FragMaterial::Dielectric { eta } => {
                 let (eta_ratio, normal) = match self.normal {
                     Normal::Outward(normal) => (1.0 / eta, normal),
                     Normal::Inward(normal) => (eta, normal),

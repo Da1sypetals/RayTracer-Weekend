@@ -42,7 +42,7 @@ impl AnimatedEntity for AnimatedSphere {
             sphere: Sphere {
                 center: lerp(&self.sphere.center, &(self.sphere.center + self.delta), t),
                 radius: self.sphere.radius,
-                mat: self.sphere.mat,
+                mat: self.sphere.mat.clone(),
             },
             delta: self.delta,
         })

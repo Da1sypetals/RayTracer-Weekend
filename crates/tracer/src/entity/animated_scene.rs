@@ -44,8 +44,8 @@ impl AnimatedScene {
         // clone the arcs
         for ent in self.entities.clone() {
             if let Some(hit) = ent.hit_by(ray, interval) {
-                scene_hit = Some(hit);
                 interval = interval.clamp_high(hit.t);
+                scene_hit = Some(hit);
             }
         }
 

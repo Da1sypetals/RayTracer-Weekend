@@ -4,7 +4,7 @@ pub mod image_space;
 
 #[cfg(test)]
 pub mod tests {
-    use std::f64::consts::PI;
+    use std::f64::consts::TAU;
 
     use glm::UVec2;
 
@@ -14,7 +14,7 @@ pub mod tests {
 
     #[test]
     fn test_cam() {
-        let yfov = 75.0 / 360.0 * 2.0 * PI;
+        let yfov = 75.0 / 360.0 * TAU;
         let cam = CameraBuilder {
             resolution: UVec2::new(1920, 1080),
             yfov,

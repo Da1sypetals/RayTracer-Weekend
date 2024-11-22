@@ -52,7 +52,7 @@ impl AnimatedEntity for AnimatedPlane {
             plane: Plane {
                 point,
                 normal,
-                mat: self.plane.mat,
+                mat: self.plane.mat.clone(),
             },
             ..*self
         })

@@ -1,12 +1,16 @@
-use serde::{Deserialize, Serialize};
-use std::{collections::BTreeMap, fs};
+use image::imageops::FilterType;
+use serde::Serialize;
+use std::{collections::BTreeMap, fs, sync::Arc};
 use toml::Value;
 
-use crate::materials::material::Material;
+use crate::{
+    helpers::types::color,
+    materials::material::{Material, TextureMap},
+};
 
-use super::toml_common::value_get_into;
+use super::toml_common::{value_get_into, value_get_into_option};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize)]
 pub struct MaterialMap {
     pub map: BTreeMap<String, Material>,
 }
@@ -60,7 +64,33 @@ impl From<Value> for MaterialMap {
                         eta: value_get_into(mat, "eta"),
                     },
 
-                    _ => panic!("Unsupported material type"),
+                    "PolarChecker" => Material::PolarChecker {
+                        color1: value_get_into(mat, "color1"),
+                        color2: value_get_into_option(mat, "color2")
+                            .unwrap_or(color::new(1.0, 1.0, 1.0)),
+                        ntheta: value_get_into(mat, "ntheta"),
+                        nphi: value_get_into(mat, "nphi"),
+                    },
+
+                    "Texture" => {
+                        let path: String = value_get_into(mat, "map_path");
+                        let resolution: u32 =
+                            value_get_into_option(mat, "resolution").unwrap_or(1024);
+                        let img = image::open(&path)
+                            .expect("Image not found!")
+                            .resize(resolution, resolution, FilterType::Gaussian)
+                            .into_rgb32f();
+
+                        Material::Texture {
+                            map: Arc::new(TextureMap {
+                                resolution,
+                                path,
+                                map: img,
+                            }),
+                        }
+                    }
+
+                    _ => panic!("Unsupported material type: {}", mat_type),
                 };
 
                 (name.to_string(), material)

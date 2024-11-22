@@ -34,11 +34,13 @@ impl Entity for Plane {
             None
         } else {
             let t = self.normal.dot(&(self.point - ray.orig)) / d_dot_n;
+            let material = self.mat.clone().try_into().expect("Material error!");
+
             if interval.contains(t) {
                 Some(Hit {
                     in_dir: ray.dir,
                     pos: ray.at(t),
-                    material: self.mat,
+                    material: material,
                     t,
                     normal: Normal::Outward(self.normal),
                 })
@@ -49,6 +51,6 @@ impl Entity for Plane {
     }
 
     fn material(&self) -> crate::materials::material::Material {
-        self.mat
+        self.mat.clone()
     }
 }

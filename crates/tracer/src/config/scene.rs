@@ -71,12 +71,12 @@ impl From<Value> for Scene {
                     "Sphere" => Arc::new(Sphere::new(
                         value_get_into(ent, "center"),
                         value_get_into(ent, "radius"),
-                        *mat,
+                        mat.clone(),
                     )),
                     "Plane" => Arc::new(Plane::new(
                         value_get_into(ent, "point"),
                         value_get_into(ent, "normal"),
-                        *mat,
+                        mat.clone(),
                     )),
 
                     _ => panic!("Unsupported entity type"),
@@ -150,14 +150,14 @@ impl From<(Value, u32)> for AnimatedScene {
                         Sphere::new(
                             value_get_into(ent, "center"),
                             value_get_into(ent, "radius"),
-                            *mat,
+                            mat.clone(),
                         ),
                         value_get_into_option(ent, "delta").unwrap_or(vec3::zeros()),
                     )),
                     "Plane" => {
                         let normal = value_get_into(ent, "normal");
                         Arc::new(AnimatedPlane::new(
-                            Plane::new(value_get_into(ent, "point"), normal, *mat),
+                            Plane::new(value_get_into(ent, "point"), normal, mat.clone()),
                             value_get_into_option(ent, "delta_point").unwrap_or(vec3::zeros()),
                             value_get_into_option(ent, "new_normal").unwrap_or(normal),
                         ))
