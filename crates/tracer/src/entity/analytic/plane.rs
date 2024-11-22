@@ -2,18 +2,23 @@ use crate::{
     entity::traits::Entity,
     helpers::types::vec3,
     materials::material::Material,
+    math::panics::PanickingNormalize,
     tracer::ray::hit::{Hit, Normal},
 };
 
 pub struct Plane {
-    point: vec3,
-    normal: vec3,
-    mat: Material,
+    pub point: vec3,
+    pub normal: vec3,
+    pub mat: Material,
 }
 
 impl Plane {
     pub fn new(point: vec3, normal: vec3, mat: Material) -> Self {
-        Self { point, normal, mat }
+        Self {
+            point,
+            normal: normal.p_normalize(),
+            mat,
+        }
     }
 }
 

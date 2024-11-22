@@ -23,4 +23,8 @@ impl GammaColor {
             (self.b * 255.0) as u8,
         ]
     }
+
+    pub fn vector(self) -> vec3 {
+        vec3::new(self.r, self.g, self.b)
+    }
 }
