@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, fs};
 use toml::Value;
 
@@ -5,7 +6,7 @@ use crate::materials::material::Material;
 
 use super::toml_common::value_get_into;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct MaterialMap {
     pub map: BTreeMap<String, Material>,
 }

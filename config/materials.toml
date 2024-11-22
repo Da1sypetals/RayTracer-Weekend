@@ -1,11 +1,7 @@
-# [[materials]]
-# name = "blue"
-# type = "Lambertian"
-# albedo = [0.1, 0.2, 0.5]
 [[materials]]
 name = "blue"
-type = "Dielectric"
-eta = 1.33
+type = "Lambertian"
+albedo = [0.1, 0.2, 0.5]
 
 [[materials]]
 name = "green"
@@ -21,6 +17,7 @@ albedo = [0.8, 0.6, 0.2]
 name = "fuzz_purple"
 type = "FuzzedMetal"
 albedo = [0.58, 0.23, 0.72]
+# fuzz is between 0 and 1
 fuzz = 0.1
 
 [[materials]]
