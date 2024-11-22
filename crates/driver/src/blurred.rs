@@ -45,5 +45,7 @@ fn main() -> anyhow::Result<()> {
             *px = color.to_gamma().quantize_u8().into()
         });
 
+    img.save("output.png")?;
+
     Ok(())
 }
