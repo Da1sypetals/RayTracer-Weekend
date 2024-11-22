@@ -1,0 +1,6 @@
+camera = "config/blurred/camera.toml"
+scene = "config/blurred/scene.toml"
+# sample per pixel
+spp = 16
+out_path = "output.png"
+n_step = 8

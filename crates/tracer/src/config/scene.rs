@@ -1,30 +1,23 @@
-use crate::entity::{
-    analytic::{plane::Plane, sphere::Sphere},
-    animated::{plane::AnimatedPlane, sphere::AnimatedSphere},
-    motion_scene::AnimatedScene,
-    scene::Scene,
-    traits::{AnimatedEntity, Entity},
+use crate::{
+    entity::{
+        analytic::{plane::Plane, sphere::Sphere},
+        animated::{plane::AnimatedPlane, sphere::AnimatedSphere},
+        motion_scene::AnimatedScene,
+        scene::Scene,
+        traits::{AnimatedEntity, Entity},
+    },
+    helpers::types::vec3,
 };
 use std::{fs, sync::Arc};
 use toml::Value;
 
-use super::{errors::SerdeError, materials::MaterialMap, toml_common::value_get_into};
+use super::{
+    errors::SerdeError,
+    materials::MaterialMap,
+    toml_common::{value_get_into, value_get_into_option},
+};
 
 impl Scene {
-    pub fn configured(path: &str) -> anyhow::Result<Self> {
-        let val: Value = toml::from_str(&fs::read_to_string(path).unwrap()).unwrap();
-        if val.get("materials_path").is_none() || !val.get("materials_path").unwrap().is_str() {
-            return Err(SerdeError::RequireFieldType {
-                field: "materials_path".into(),
-                ty: "string".into(),
-            }
-            .into());
-        }
-        Ok(val.into())
-    }
-}
-
-impl AnimatedScene {
     pub fn configured(path: &str) -> anyhow::Result<Self> {
         let val: Value = toml::from_str(&fs::read_to_string(path).unwrap()).unwrap();
         if val.get("materials_path").is_none() || !val.get("materials_path").unwrap().is_str() {
@@ -97,6 +90,24 @@ impl From<Value> for Scene {
     }
 }
 
+// ################################################################
+// ########################### animated ###########################
+// ################################################################
+
+impl AnimatedScene {
+    pub fn configured(path: &str) -> anyhow::Result<Self> {
+        let val: Value = toml::from_str(&fs::read_to_string(path).unwrap()).unwrap();
+        if val.get("materials_path").is_none() || !val.get("materials_path").unwrap().is_str() {
+            return Err(SerdeError::RequireFieldType {
+                field: "materials_path".into(),
+                ty: "string".into(),
+            }
+            .into());
+        }
+        Ok(val.into())
+    }
+}
+
 impl From<Value> for AnimatedScene {
     fn from(value: Value) -> Self {
         let material_map_path = value
@@ -140,17 +151,16 @@ impl From<Value> for AnimatedScene {
                             value_get_into(ent, "radius"),
                             *mat,
                         ),
-                        value_get_into(ent, "delta"),
+                        value_get_into_option(ent, "delta").unwrap_or(vec3::zeros()),
                     )),
-                    "Plane" => Arc::new(AnimatedPlane::new(
-                        Plane::new(
-                            value_get_into(ent, "point"),
-                            value_get_into(ent, "normal"),
-                            *mat,
-                        ),
-                        value_get_into(ent, "delta_point"),
-                        value_get_into(ent, "new_normal"),
-                    )),
+                    "Plane" => {
+                        let normal = value_get_into(ent, "normal");
+                        Arc::new(AnimatedPlane::new(
+                            Plane::new(value_get_into(ent, "point"), normal, *mat),
+                            value_get_into_option(ent, "delta_point").unwrap_or(vec3::zeros()),
+                            value_get_into_option(ent, "new_normal").unwrap_or(normal),
+                        ))
+                    }
 
                     _ => panic!("Unsupported entity type"),
                 };

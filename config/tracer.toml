@@ -1,5 +1,0 @@
-camera = "config/camera.toml"
-scene = "config/scene.toml"
-# sample per pixel
-spp = 16
-out_path = "output.png"

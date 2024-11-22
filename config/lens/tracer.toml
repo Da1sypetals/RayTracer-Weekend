@@ -1,0 +1,5 @@
+camera = "config/lens/camera.toml"
+scene = "config/lens/scene.toml"
+# sample per pixel
+spp = 16
+out_path = "output.png"

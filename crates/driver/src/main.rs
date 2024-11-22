@@ -5,7 +5,7 @@ use rayon::iter::ParallelIterator;
 use raytrace::{helpers::traits::Color, tracer::tracers::tracer_lens::TracerLens};
 
 fn main() -> anyhow::Result<()> {
-    let tracer = TracerLens::configured("config/tracer.toml")?;
+    let tracer = TracerLens::configured("config/lens/tracer.toml")?;
 
     // ########################### Main work ###########################
     let mut img = RgbImage::new(tracer.cam.resolution.x, tracer.cam.resolution.y);

@@ -14,3 +14,14 @@ pub fn value_get_into<T: DeserializeOwned>(value: &Value, key: &str) -> T {
     let wrapper: Wrapper<T> = toml::from_str(&format!("value = {}", repr)).unwrap();
     wrapper.value
 }
+
+pub fn value_get_into_option<T: DeserializeOwned>(value: &Value, key: &str) -> Option<T> {
+    #[derive(Serialize, Deserialize, Debug)]
+    struct Wrapper<T> {
+        value: T,
+    }
+
+    let repr = value.get(key)?.to_string();
+    let wrapper: Wrapper<T> = toml::from_str(&format!("value = {}", repr)).unwrap();
+    Some(wrapper.value)
+}
