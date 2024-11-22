@@ -13,7 +13,7 @@ type = "Sphere"
 material = "blue"
 center = [4.0, 0.0, 0.0]
 radius = 1.5
-delta_point = [0, 0.6, 0]
+delta = [0, 0.6, 0]
 
 [[entities]]
 # left top
@@ -42,4 +42,4 @@ type = "Sphere"
 material = "mirror_yellow"
 center = [4.0, 0.0, -3.0]
 radius = 1.5
-delta_point = [-0.6, 0.6, 0]
+delta = [-0.6, 0.6, 0]

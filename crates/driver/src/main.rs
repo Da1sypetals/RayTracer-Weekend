@@ -3,6 +3,7 @@ use indicatif::ParallelProgressIterator;
 use rand::rngs::ThreadRng;
 use rayon::iter::ParallelIterator;
 use raytrace::{helpers::traits::Color, tracer::tracers::tracer_lens::TracerLens};
+mod debug;
 
 fn main() -> anyhow::Result<()> {
     let tracer = TracerLens::configured("config/lens/tracer.toml")?;

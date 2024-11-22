@@ -8,6 +8,7 @@ use raytrace::{
     helpers::{traits::Color, types::vec3},
     tracer::tracers::tracer_animated::TracerAnimated,
 };
+mod debug;
 
 fn main() -> anyhow::Result<()> {
     let mut tracer = TracerAnimated::configured("config/blurred/tracer.toml")?;
@@ -21,7 +22,9 @@ fn main() -> anyhow::Result<()> {
 
     while let Some(i) = tracer.scene.step() {
         println!("[raytrace] timestep {}", i);
-        dbg!(&tracer.scene);
+        // dbg!(&tracer.scene);
+        // wait_for_input();
+
         colors
             .indexed_iter_mut()
             .progress()
