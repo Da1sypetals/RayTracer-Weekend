@@ -1,6 +1,6 @@
 use crate::{
     camera::camera_lens::{LensCamera, LensCameraBuilder},
-    entity::{motion_scene::AnimatedScene, scene::Scene},
+    entity::motion_scene::AnimatedScene,
     helpers::{
         constants::MAX_NUM_REFLECTION,
         types::{color, vec3},
