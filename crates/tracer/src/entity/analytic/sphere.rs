@@ -52,7 +52,7 @@ impl Entity for Sphere {
                 return None;
             };
 
-            let pos = ray.orig + ray.dir * t;
+            let pos = ray.at(t);
             let v = ray.orig + ray.dir * interval.min().expect("Ray should have minimum t!")
                 - self.center;
             let normal = if v.norm_squared() > self.radius * self.radius {

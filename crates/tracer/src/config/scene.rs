@@ -1,7 +1,10 @@
+use crate::entity::{
+    analytic::{plane::Plane, sphere::Sphere},
+    scene::Scene,
+    traits::Entity,
+};
 use std::{fs, sync::Arc};
 use toml::Value;
-
-use crate::entity::{analytic::sphere::Sphere, scene::Scene, traits::Entity};
 
 use super::{errors::SerdeError, materials::MaterialMap, toml_common::value_get_into};
 
@@ -60,6 +63,11 @@ impl From<Value> for Scene {
                     "Sphere" => Arc::new(Sphere::new(
                         value_get_into(ent, "center"),
                         value_get_into(ent, "radius"),
+                        *mat,
+                    )),
+                    "Plane" => Arc::new(Plane::new(
+                        value_get_into(ent, "point"),
+                        value_get_into(ent, "normal"),
                         *mat,
                     )),
 

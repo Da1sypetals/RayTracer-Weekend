@@ -15,7 +15,9 @@ use rand::rngs::ThreadRng;
 
 #[derive(Debug, Clone, Copy)]
 pub enum Normal {
+    /// If a body have no _inside_, then every normal is outwards;
     Outward(vec3),
+    /// If a body is watertight, then it is necessary to distinguish between inward and outward.
     Inward(vec3),
 }
 
