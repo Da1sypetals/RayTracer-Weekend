@@ -6,6 +6,7 @@ use crate::{
     tracer::ray::hit::{Hit, Normal},
 };
 
+#[derive(Debug)]
 pub struct Sphere {
     pub center: vec3,
     pub radius: f64,

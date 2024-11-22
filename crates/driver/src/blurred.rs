@@ -19,10 +19,9 @@ fn main() -> anyhow::Result<()> {
     );
     let mut colors: Array<vec3, _> = Array::zeros((x, y).f());
 
-    for i in 0..tracer.n_step {
+    while let Some(i) = tracer.scene.step() {
         println!("[raytrace] timestep {}", i);
-        let time = i as f64 / tracer.n_step as f64;
-        tracer.scene.step_at(time);
+        dbg!(&tracer.scene);
         colors
             .indexed_iter_mut()
             .progress()

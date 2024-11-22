@@ -6,25 +6,32 @@ use crate::{
 use super::traits::AnimatedEntity;
 use std::sync::Arc;
 
+#[derive(Debug)]
 pub struct AnimatedScene {
-    pub start_entities: Vec<Arc<dyn AnimatedEntity>>,
     pub entities: Vec<Arc<dyn AnimatedEntity>>,
+    pub n_step: u32,
+    pub i_step: u32,
+    pub dt: f64,
 }
 
 impl AnimatedScene {
-    pub fn new(entities: Vec<Arc<dyn AnimatedEntity>>) -> Self {
+    pub fn new(entities: Vec<Arc<dyn AnimatedEntity>>, n_step: u32) -> Self {
         Self {
-            start_entities: entities.clone(),
             entities,
+            n_step,
+            i_step: 0,
+            dt: 1.0 / n_step as f64,
         }
     }
 
-    pub fn step_at(&mut self, time: f64) {
-        self.entities = self
-            .start_entities
-            .iter()
-            .map(|e| e.step_at(time))
-            .collect();
+    pub fn step(&mut self) -> Option<u32> {
+        self.i_step += 1;
+        if self.i_step >= self.n_step {
+            None
+        } else {
+            self.entities = self.entities.iter().map(|e| e.step(self.dt)).collect();
+            Some(self.i_step)
+        }
     }
 }
 

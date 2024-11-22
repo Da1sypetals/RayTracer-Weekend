@@ -1,6 +1,6 @@
 use crate::{
     camera::camera_lens::{LensCamera, LensCameraBuilder},
-    entity::motion_scene::AnimatedScene,
+    entity::animated_scene::AnimatedScene,
     helpers::{
         constants::MAX_NUM_REFLECTION,
         types::{color, vec3},
@@ -35,7 +35,7 @@ impl TracerAnimated {
             toml::from_str(fs::read_to_string(path).unwrap().as_str()).unwrap();
 
         let cam = LensCameraBuilder::configured(&builder.camera)?.build();
-        let scene = AnimatedScene::configured(&builder.scene)?;
+        let scene = AnimatedScene::configured(&builder.scene, builder.n_step)?;
         Ok(Self {
             cam,
             scene,

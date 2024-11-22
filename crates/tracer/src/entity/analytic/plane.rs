@@ -6,6 +6,7 @@ use crate::{
     tracer::ray::hit::{Hit, Normal},
 };
 
+#[derive(Debug)]
 pub struct Plane {
     pub point: vec3,
     pub normal: vec3,

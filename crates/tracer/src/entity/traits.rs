@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{fmt::Debug, sync::Arc};
 
 use crate::{
     materials::material::Material,
@@ -6,11 +6,11 @@ use crate::{
     tracer::ray::{hit::Hit, ray::Ray},
 };
 
-pub trait Entity: Sync + Send {
+pub trait Entity: Sync + Send + Debug {
     fn hit_by(&self, ray: Ray, interval: Interval) -> Option<Hit>;
     fn material(&self) -> Material;
 }
 
-pub trait AnimatedEntity: Sync + Send + Entity {
-    fn step_at(&self, t: f64) -> Arc<dyn AnimatedEntity>;
+pub trait AnimatedEntity: Entity {
+    fn step(&self, t: f64) -> Arc<dyn AnimatedEntity>;
 }

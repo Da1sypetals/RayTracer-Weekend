@@ -11,6 +11,7 @@ use crate::{
     math::panics::PanickingNormalize,
 };
 
+#[derive(Debug)]
 pub struct AnimatedPlane {
     plane: Plane,
     delta_point: vec3,
@@ -44,7 +45,7 @@ impl Entity for AnimatedPlane {
 }
 
 impl AnimatedEntity for AnimatedPlane {
-    fn step_at(&self, t: f64) -> std::sync::Arc<dyn AnimatedEntity> {
+    fn step(&self, t: f64) -> std::sync::Arc<dyn AnimatedEntity> {
         let point = lerp(&self.plane.point, &(self.plane.point + self.delta_point), t);
         let normal = slerp(&self.plane.normal, &self.new_normal, t);
         Arc::new(Self {

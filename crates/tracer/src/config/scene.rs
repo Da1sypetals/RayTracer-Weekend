@@ -2,7 +2,7 @@ use crate::{
     entity::{
         analytic::{plane::Plane, sphere::Sphere},
         animated::{plane::AnimatedPlane, sphere::AnimatedSphere},
-        motion_scene::AnimatedScene,
+        animated_scene::AnimatedScene,
         scene::Scene,
         traits::{AnimatedEntity, Entity},
     },
@@ -95,7 +95,7 @@ impl From<Value> for Scene {
 // ################################################################
 
 impl AnimatedScene {
-    pub fn configured(path: &str) -> anyhow::Result<Self> {
+    pub fn configured(path: &str, n_step: u32) -> anyhow::Result<Self> {
         let val: Value = toml::from_str(&fs::read_to_string(path).unwrap()).unwrap();
         if val.get("materials_path").is_none() || !val.get("materials_path").unwrap().is_str() {
             return Err(SerdeError::RequireFieldType {
@@ -104,12 +104,13 @@ impl AnimatedScene {
             }
             .into());
         }
-        Ok(val.into())
+        Ok((val, n_step).into())
     }
 }
 
-impl From<Value> for AnimatedScene {
-    fn from(value: Value) -> Self {
+impl From<(Value, u32)> for AnimatedScene {
+    fn from(val: (Value, u32)) -> Self {
+        let (value, n_step) = val;
         let material_map_path = value
             .get("materials_path")
             .expect("Expected field [materials_path]")
@@ -169,6 +170,6 @@ impl From<Value> for AnimatedScene {
             })
             .collect();
 
-        Self::new(entities)
+        Self::new(entities, n_step)
     }
 }

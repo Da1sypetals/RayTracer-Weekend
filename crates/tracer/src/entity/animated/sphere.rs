@@ -8,6 +8,7 @@ use crate::{
 use glm::lerp;
 use std::sync::Arc;
 
+#[derive(Debug)]
 pub struct AnimatedSphere {
     sphere: Sphere,
     delta: vec3,
@@ -36,7 +37,7 @@ impl Entity for AnimatedSphere {
 }
 
 impl AnimatedEntity for AnimatedSphere {
-    fn step_at(&self, t: f64) -> std::sync::Arc<dyn AnimatedEntity> {
+    fn step(&self, t: f64) -> std::sync::Arc<dyn AnimatedEntity> {
         Arc::new(AnimatedSphere {
             sphere: Sphere {
                 center: lerp(&self.sphere.center, &(self.sphere.center + self.delta), t),
