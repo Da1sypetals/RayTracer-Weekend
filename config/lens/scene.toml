@@ -1,4 +1,5 @@
-materials_path = "config/lens/materials.toml"
+# materials_path = "config/lens/materials.toml"
+materials_path = "config/lens/mat2.toml"
 
 [[entities]]
 # ground

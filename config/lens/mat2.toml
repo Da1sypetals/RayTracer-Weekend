@@ -1,10 +1,8 @@
 [[materials]]
 name = "blue"
-type = "PolarChecker"
-color1 = [0.1, 0.2, 0.5]
-color2 = [0.8, 0.8, 0.8]
-ntheta = 18
-nphi = 36
+type = "Texture"
+map_path = "marble.png"
+resolution = 1024
 
 [[materials]]
 name = "green"
