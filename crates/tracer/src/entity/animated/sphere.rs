@@ -29,11 +29,6 @@ impl Entity for AnimatedSphere {
     ) -> Option<crate::tracer::ray::hit::Hit> {
         self.sphere.hit_by(ray, interval)
     }
-
-    #[inline]
-    fn material(&self) -> crate::materials::material::Material {
-        self.sphere.material()
-    }
 }
 
 impl AnimatedEntity for AnimatedSphere {

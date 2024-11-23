@@ -135,9 +135,6 @@ impl Entity for Parallelogram {
         }
     }
 
-    fn material(&self) -> crate::materials::material::Material {
-        self.mat.clone()
-    }
 }
 
 impl Parallelogram {

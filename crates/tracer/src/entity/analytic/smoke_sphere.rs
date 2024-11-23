@@ -9,13 +9,13 @@ use crate::{
 };
 
 #[derive(Debug)]
-pub struct Sphere {
+pub struct SmokeSphere {
     pub center: vec3,
     pub radius: f64,
     pub mat: Material,
 }
 
-impl Sphere {
+impl SmokeSphere {
     pub fn new(center: vec3, radius: f64, mat: Material) -> Self {
         Self {
             center,
@@ -25,7 +25,7 @@ impl Sphere {
     }
 }
 
-impl Entity for Sphere {
+impl Entity for SmokeSphere {
     fn hit_by(
         &self,
         ray: crate::tracer::ray::ray::Ray,
@@ -76,7 +76,7 @@ impl Entity for Sphere {
     }
 }
 
-impl Sphere {
+impl SmokeSphere {
     #[inline]
     fn spherical_coords(&self, hitpos: vec3) -> (f64, f64) {
         let v = hitpos - self.center;

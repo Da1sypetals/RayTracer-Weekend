@@ -55,7 +55,4 @@ impl Entity for Plane {
         }
     }
 
-    fn material(&self) -> crate::materials::material::Material {
-        self.mat.clone()
-    }
 }

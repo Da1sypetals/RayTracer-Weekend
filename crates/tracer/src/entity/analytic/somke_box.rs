@@ -2,7 +2,7 @@ use super::{commons::Point, parallelogram::Parallelogram};
 use crate::{entity::traits::Entity, helpers::types::vec3, materials::material::Material};
 
 #[derive(Debug)]
-pub struct Box {
+pub struct SmokeBox {
     pub a: vec3,
     pub b: vec3,
     pub c: vec3,
@@ -13,7 +13,7 @@ pub struct Box {
     faces: [Parallelogram; 6],
 }
 
-impl Box {
+impl SmokeBox {
     #[rustfmt::skip]
     pub fn new(a: vec3, b: vec3, c: vec3, d: vec3, mat: Material) -> Self {
         let e = b + c - a;
@@ -31,7 +31,7 @@ impl Box {
     }
 }
 
-impl Entity for Box {
+impl Entity for SmokeBox {
     fn hit_by(
         &self,
         ray: crate::tracer::ray::ray::Ray,
@@ -50,4 +50,7 @@ impl Entity for Box {
         nearest_hit
     }
 
+    fn material(&self) -> crate::materials::material::Material {
+        self.mat.clone()
+    }
 }

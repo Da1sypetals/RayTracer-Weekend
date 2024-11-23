@@ -132,10 +132,6 @@ impl Entity for Triangle {
             None
         }
     }
-
-    fn material(&self) -> crate::materials::material::Material {
-        self.mat.clone()
-    }
 }
 
 impl Triangle {

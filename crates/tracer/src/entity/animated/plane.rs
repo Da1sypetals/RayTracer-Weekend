@@ -37,11 +37,6 @@ impl Entity for AnimatedPlane {
     ) -> Option<crate::tracer::ray::hit::Hit> {
         self.plane.hit_by(ray, interval)
     }
-
-    #[inline]
-    fn material(&self) -> crate::materials::material::Material {
-        self.plane.material()
-    }
 }
 
 impl AnimatedEntity for AnimatedPlane {
