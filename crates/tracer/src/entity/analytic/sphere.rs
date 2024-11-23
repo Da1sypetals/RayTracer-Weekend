@@ -55,22 +55,19 @@ impl Entity for Sphere {
                 return None;
             };
 
-            let pos = ray.at(t);
+            let hitpos = ray.at(t);
             let v = ray.orig + ray.dir * interval.min().expect("Ray should have minimum t!")
                 - self.center;
             let normal = if v.norm_squared() > self.radius * self.radius {
-                Normal::Outward((pos - self.center).p_normalize())
+                Normal::Outward((hitpos - self.center).p_normalize())
             } else {
-                Normal::Inward((self.center - pos).p_normalize())
+                Normal::Inward((self.center - hitpos).p_normalize())
             };
 
-            let material: FragMaterial = match self.mat.clone().try_into() {
-                Ok(fmat) => fmat,
-                Err(_) => self.frag_material(pos),
-            };
+            let material: FragMaterial = self.frag_material(hitpos);
             Some(Hit {
                 in_dir: ray.dir,
-                pos,
+                pos: hitpos,
                 normal,
                 t,
                 material,
@@ -91,35 +88,38 @@ impl Sphere {
     }
 
     fn frag_material(&self, hitpos: vec3) -> FragMaterial {
-        match &self.mat {
-            Material::PolarChecker {
-                color1,
-                color2,
-                ntheta,
-                nphi,
-            } => {
-                let dtheta = PI / *ntheta as f64;
-                let dphi = TAU / *nphi as f64;
+        match self.mat.clone().try_into() {
+            Ok(fmat) => fmat,
+            Err(_) => match &self.mat {
+                Material::PolarChecker {
+                    color1,
+                    color2,
+                    ntheta,
+                    nphi,
+                } => {
+                    let dtheta = PI / *ntheta as f64;
+                    let dphi = TAU / *nphi as f64;
 
-                let (theta, phi) = self.spherical_coords(hitpos);
-                let colored = (theta / dtheta) as u32 % 2 == (phi / dphi) as u32 % 2;
+                    let (theta, phi) = self.spherical_coords(hitpos);
+                    let colored = (theta / dtheta) as u32 % 2 == (phi / dphi) as u32 % 2;
 
-                if colored {
-                    FragMaterial::Lambertian { albedo: *color1 }
-                } else {
-                    FragMaterial::Lambertian { albedo: *color2 }
+                    if colored {
+                        FragMaterial::Lambertian { albedo: *color1 }
+                    } else {
+                        FragMaterial::Lambertian { albedo: *color2 }
+                    }
                 }
-            }
 
-            Material::Texture { map } => {
-                let (theta, phi) = self.spherical_coords(hitpos);
-                let x = phi / TAU;
-                let y = theta / PI;
-                FragMaterial::Lambertian {
-                    albedo: map.query(x, y),
+                Material::Texture { map } => {
+                    let (theta, phi) = self.spherical_coords(hitpos);
+                    let x = phi / TAU;
+                    let y = theta / PI;
+                    FragMaterial::Lambertian {
+                        albedo: map.query(x, y),
+                    }
                 }
-            }
-            _ => unreachable!(),
+                _ => unreachable!(),
+            },
         }
     }
 }

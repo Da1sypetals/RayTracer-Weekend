@@ -1,6 +1,6 @@
 use crate::{
     entity::{
-        analytic::{plane::Plane, sphere::Sphere},
+        analytic::{plane::Plane, sphere::Sphere, triangle::Triangle},
         animated::{plane::AnimatedPlane, sphere::AnimatedSphere},
         animated_scene::AnimatedScene,
         scene::Scene,
@@ -76,6 +76,12 @@ impl From<Value> for Scene {
                     "Plane" => Arc::new(Plane::new(
                         value_get_into(ent, "point"),
                         value_get_into(ent, "normal"),
+                        mat.clone(),
+                    )),
+                    "Triangle" => Arc::new(Triangle::new(
+                        value_get_into(ent, "a"),
+                        value_get_into(ent, "b"),
+                        value_get_into(ent, "c"),
                         mat.clone(),
                     )),
 

@@ -86,15 +86,10 @@ impl TryFrom<Material> for FragMaterial {
                 Ok(FragMaterial::FuzzedMetal { albedo, fuzz })
             }
             Material::Dielectric { eta } => Ok(FragMaterial::Dielectric { eta }),
-            Material::PolarChecker {
-                color1: _,
-                color2: _,
-                ntheta: _,
-                nphi: _,
-            } => Err(MaterialError::CannotConvert {
+            Material::PolarChecker { .. } => Err(MaterialError::CannotConvert {
                 mat_type: "polar checker".into(),
             }),
-            Material::Texture { map: _ } => Err(MaterialError::CannotConvert {
+            Material::Texture { .. } => Err(MaterialError::CannotConvert {
                 mat_type: "texture".into(),
             }),
         }

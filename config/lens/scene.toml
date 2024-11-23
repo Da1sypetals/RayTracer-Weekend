@@ -9,11 +9,19 @@ point = [0, -1.5, 0]
 normal = [0, 1, 0]
 
 [[entities]]
-# center
-type = "Sphere"
+# back
+type = "Triangle"
 material = "blue"
-center = [4.0, 0.0, 0.0]
-radius = 1.5
+a = { world = [6, 0.0, -1.0], uv = [1, 0] }
+b = { world = [6, 0.0, 1.0], uv = [0, 1] }
+c = { world = [6.2, 2.0, 0.0], uv = [0, 0] }
+
+# [[entities]]
+# # center
+# type = "Sphere"
+# material = "blue"
+# center = [4.0, 0.0, 0.0]
+# radius = 1.5
 
 [[entities]]
 # left top

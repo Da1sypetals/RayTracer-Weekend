@@ -33,16 +33,21 @@ impl Entity for Plane {
         if d_dot_n.abs() < f64::EPSILON {
             None
         } else {
-            let t = self.normal.dot(&(self.point - ray.orig)) / d_dot_n;
+            let v = ray.orig - self.point;
+            let t = self.normal.dot(&-v) / d_dot_n;
             let material = self.mat.clone().try_into().expect("Material error!");
 
             if interval.contains(t) {
                 Some(Hit {
                     in_dir: ray.dir,
                     pos: ray.at(t),
-                    material: material,
+                    material,
                     t,
-                    normal: Normal::Outward(self.normal),
+                    normal: Normal::Outward(if v.dot(&self.normal) >= 0.0 {
+                        self.normal
+                    } else {
+                        -self.normal
+                    }),
                 })
             } else {
                 None
