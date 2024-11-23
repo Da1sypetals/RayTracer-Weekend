@@ -1,6 +1,8 @@
 use crate::{
     entity::{
-        analytic::{plane::Plane, sphere::Sphere, triangle::Triangle},
+        analytic::{
+            parallelogram::Parallelogram, plane::Plane, sphere::Sphere, triangle::Triangle,
+        },
         animated::{plane::AnimatedPlane, sphere::AnimatedSphere},
         animated_scene::AnimatedScene,
         scene::Scene,
@@ -79,6 +81,12 @@ impl From<Value> for Scene {
                         mat.clone(),
                     )),
                     "Triangle" => Arc::new(Triangle::new(
+                        value_get_into(ent, "a"),
+                        value_get_into(ent, "b"),
+                        value_get_into(ent, "c"),
+                        mat.clone(),
+                    )),
+                    "Parallelogram" => Arc::new(Parallelogram::new(
                         value_get_into(ent, "a"),
                         value_get_into(ent, "b"),
                         value_get_into(ent, "c"),

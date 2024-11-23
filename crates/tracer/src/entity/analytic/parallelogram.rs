@@ -20,10 +20,11 @@ pub struct Point {
 }
 
 #[derive(Debug)]
-pub struct Triangle {
+pub struct Parallelogram {
     pub a: Point,
     pub b: Point,
     pub c: Point,
+    // d = b + c - a
     pub mat: Material,
 
     ab: Point,
@@ -31,7 +32,7 @@ pub struct Triangle {
     normal: vec3,
 }
 
-impl Triangle {
+impl Parallelogram {
     pub fn new(a: Point, b: Point, c: Point, mat: Material) -> Self {
         Self {
             a,
@@ -53,7 +54,7 @@ impl Triangle {
     }
 }
 
-impl Entity for Triangle {
+impl Entity for Parallelogram {
     fn hit_by(
         &self,
         ray: crate::tracer::ray::ray::Ray,
@@ -127,7 +128,7 @@ impl Entity for Triangle {
 
         let v = ray.orig - self.a.world;
         // dbg!(normal);
-        if interval.contains(t) && k1 >= 0.0 && k2 >= 0.0 && k1 + k2 <= 1.0 {
+        if interval.contains(t) && k1 >= 0.0 && k2 >= 0.0 && k1 <= 1.0 && k2 <= 1.0 {
             let material = self.frag_material(k1, k2);
             Some(Hit {
                 in_dir: ray.dir,
@@ -150,7 +151,7 @@ impl Entity for Triangle {
     }
 }
 
-impl Triangle {
+impl Parallelogram {
     fn frag_material(&self, k1: f64, k2: f64) -> FragMaterial {
         match self.mat.clone().try_into() {
             Ok(fmat) => fmat,

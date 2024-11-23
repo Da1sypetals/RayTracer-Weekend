@@ -12,8 +12,8 @@ normal = [0, 1, 0]
 # back
 type = "Triangle"
 material = "blue"
-a = { world = [6, 0.0, -1.0], uv = [1, 0] }
-b = { world = [6, 0.0, 1.0], uv = [0, 1] }
+a = { world = [6, 0.0, 1.0], uv = [1, 0] }
+b = { world = [6, 0.0, -1.0], uv = [0, 1] }
 c = { world = [6.2, 2.0, 0.0], uv = [0, 0] }
 
 # [[entities]]
