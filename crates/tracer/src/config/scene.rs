@@ -6,10 +6,8 @@ use super::{
 use crate::{
     entity::{
         analytic::{
-            parallelogram::{Parallelogram, Point},
-            plane::Plane,
-            sphere::Sphere,
-            triangle::Triangle,
+            box_::Box, commons::Point, parallelogram::Parallelogram, plane::Plane,
+            sphere::Sphere, triangle::Triangle,
         },
         animated::{plane::AnimatedPlane, sphere::AnimatedSphere},
         animated_scene::AnimatedScene,
@@ -53,73 +51,63 @@ impl From<Value> for Scene {
 
         let background = value_get_into(&value, "background");
 
-        let mut entities = Vec::new();
+        let entities = ents
+            .into_iter()
+            .map(|ent| {
+                let ent_type = ent
+                    .get("type")
+                    .expect("Expect a type")
+                    .as_str()
+                    .expect("Expect entity type to be string");
 
-        for ent in ents {
-            let ent_type = ent
-                .get("type")
-                .expect("Expect a type")
-                .as_str()
-                .expect("Expect entity type to be string");
+                let mat_name = ent
+                    .get("material")
+                    .expect("Expect a material name")
+                    .as_str()
+                    .expect("Expect material name to be string");
 
-            let mat_name = ent
-                .get("material")
-                .expect("Expect a material name")
-                .as_str()
-                .expect("Expect material name to be string");
+                let mat = material_map
+                    .map
+                    .get(mat_name)
+                    .expect(&format!("Material not found: {}", mat_name));
 
-            let mat = material_map
-                .map
-                .get(mat_name)
-                .expect(&format!("Material not found: {}", mat_name));
-
-            #[rustfmt::skip]
-            let mut entity: Vec<Arc<dyn Entity>> = match ent_type {
-                "Sphere" => vec![Arc::new(Sphere::new(
+                #[rustfmt::skip]
+            let entity: Arc<dyn Entity> = match ent_type {
+                "Sphere" => Arc::new(Sphere::new(
                     value_get_into(ent, "center"),
                     value_get_into(ent, "radius"),
                     mat.clone(),
-                ))],
-                "Plane" => vec![Arc::new(Plane::new(
+                )),
+                "Plane" => Arc::new(Plane::new(
                     value_get_into(ent, "point"),
                     value_get_into(ent, "normal"),
                     mat.clone(),
-                ))],
-                "Triangle" => vec![Arc::new(Triangle::new(
+                )),
+                "Triangle" => Arc::new(Triangle::new(
                     value_get_into(ent, "a"),
                     value_get_into(ent, "b"),
                     value_get_into(ent, "c"),
                     mat.clone(),
-                ))],
-                "Parallelogram" => vec![Arc::new(Parallelogram::new(
+                )),
+                "Parallelogram" => Arc::new(Parallelogram::new(
                     value_get_into(ent, "a"),
                     value_get_into(ent, "b"),
                     value_get_into(ent, "c"),
                     mat.clone(),
-                ))],
+                )),
                 "Box" => {
-                    let a: vec3 = value_get_into(ent, "a");
-                    let b: vec3 = value_get_into(ent, "b");
-                    let c: vec3 = value_get_into(ent, "c");
-                    let d: vec3 = value_get_into(ent, "d");
-                    let e = b + c - a;
-                    let f = b + d - a;
-                    let g = d + c - a;
-                    vec![
-                        Arc::new(Parallelogram::new(Point::world(a), Point::world(b), Point::world(c), mat.clone())),
-                        Arc::new(Parallelogram::new(Point::world(a), Point::world(b), Point::world(d), mat.clone())),
-                        Arc::new(Parallelogram::new(Point::world(a), Point::world(c), Point::world(d), mat.clone())),
-                        Arc::new(Parallelogram::new(Point::world(b), Point::world(e), Point::world(f), mat.clone())),
-                        Arc::new(Parallelogram::new(Point::world(c), Point::world(e), Point::world(g), mat.clone())),
-                        Arc::new(Parallelogram::new(Point::world(d), Point::world(f), Point::world(g), mat.clone())),
-                    ]
+                    Arc::new(Box::new(value_get_into(ent, "a"),
+                    value_get_into(ent, "b"),
+                    value_get_into(ent, "c"),
+                    value_get_into(ent, "d"), mat.clone()))
                 }
 
                 _ => panic!("Unsupported entity type"),
             };
 
-            entities.append(&mut entity);
-        }
+                entity
+            })
+            .collect();
 
         Self {
             entities,

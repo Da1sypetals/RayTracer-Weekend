@@ -15,7 +15,7 @@ pub struct Box {
     pub b: vec3,
     pub c: vec3,
     pub d: vec3,
-    // d = b + c - a
+    
     pub mat: Material,
 
     faces: [Parallelogram; 6],
