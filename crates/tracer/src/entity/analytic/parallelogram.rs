@@ -19,6 +19,15 @@ pub struct Point {
     uv: vec2,
 }
 
+impl Point {
+    pub fn world(p: vec3) -> Self {
+        Self {
+            world: p,
+            uv: vec2::zeros(),
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct Parallelogram {
     pub a: Point,
