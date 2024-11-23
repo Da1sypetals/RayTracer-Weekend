@@ -6,7 +6,7 @@ use raytrace::{helpers::traits::Color, tracer::tracers::tracer_lens::TracerLens}
 mod debug;
 
 fn main() -> anyhow::Result<()> {
-    let tracer = TracerLens::configured("config/lens/tracer.toml")?;
+    let tracer = TracerLens::configured("config/dark/tracer.toml")?;
 
     // ########################### Main work ###########################
     let mut img = RgbImage::new(tracer.cam.resolution.x, tracer.cam.resolution.y);

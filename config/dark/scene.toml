@@ -1,10 +1,17 @@
 # materials_path = "config/lens/materials.toml"
-materials_path = "config/lens/mat2.toml"
+materials_path = "config/dark/materials.toml"
 
 [background]
-type = "Blend"
-from = [1, 1, 1]
-to = [0.7, 0.8, 1.0]
+type = "Pure"
+color = [0.1, 0.12, 0.3]
+
+[[entities]]
+# light
+type = "Parallelogram"
+material = "light"
+a = { world = [3, 1.6, -1.5] }
+b = { world = [4, 1.6, -1.5] }
+c = { world = [3, 1.6, 1.5] }
 
 [[entities]]
 # ground
@@ -16,24 +23,24 @@ normal = [0, 1, 0]
 [[entities]]
 # back
 type = "Triangle"
-material = "blue"
-a = { world = [6, 0.0, 1.0], uv = [1, 0] }
-b = { world = [6, 0.0, -1.0], uv = [0, 1] }
-c = { world = [6.2, 2.0, 0.0], uv = [0, 0] }
+material = "pink"
+a = { world = [8, 0.0, 2.0], uv = [1, 0] }
+b = { world = [8, 0.0, -2.0], uv = [0, 1] }
+c = { world = [8, 3.0, 0.0], uv = [0, 0] }
 
-# [[entities]]
-# # center
-# type = "Sphere"
-# material = "blue"
-# center = [4.0, 0.0, 0.0]
-# radius = 1.5
+[[entities]]
+# center
+type = "Sphere"
+material = "blue"
+center = [4.0, 0.0, 0.0]
+radius = 1.5
 
 [[entities]]
 # left top
 type = "Sphere"
 material = "fuzz_purple"
-center = [4.0, 1.5, -1.5]
-radius = 0.6
+center = [2.0, -0.9, -1.0]
+radius = 0.4
 
 [[entities]]
 # right

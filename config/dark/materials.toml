@@ -1,0 +1,45 @@
+[[materials]]
+name = "light"
+type = "DiffuseLight"
+color = [3, 3, 3]
+
+[[materials]]
+name = "blue"
+type = "PolarChecker"
+color1 = [0.1, 0.2, 0.5]
+color2 = [0.8, 0.8, 0.8]
+ntheta = 18
+nphi = 36
+
+[[materials]]
+name = "pink"
+type = "Lambertian"
+albedo = [0.84, 0.55, 0.67]
+
+
+[[materials]]
+name = "green"
+type = "Lambertian"
+albedo = [0.1, 0.5, 0.2]
+
+[[materials]]
+name = "mirror_yellow"
+type = "Metal"
+albedo = [0.8, 0.6, 0.2]
+
+[[materials]]
+name = "fuzz_purple"
+type = "FuzzedMetal"
+albedo = [0.58, 0.23, 0.72]
+# fuzz is between 0 and 1
+fuzz = 0.1
+
+[[materials]]
+name = "transp"
+type = "Dielectric"
+eta = 0.75
+
+[[materials]]
+name = "transp_inner"
+type = "Dielectric"
+eta = 1.33

@@ -90,6 +90,10 @@ impl From<Value> for MaterialMap {
                         }
                     }
 
+                    "DiffuseLight" => Material::DiffuseLight {
+                        color: value_get_into(mat, "color"),
+                    },
+
                     _ => panic!("Unsupported material type: {}", mat_type),
                 };
 

@@ -93,6 +93,14 @@ impl Hit {
 
                 Some((color::new(1.0, 1.0, 1.0), reflected_ray))
             }
+            FragMaterial::DiffuseLight { .. } => None,
+        }
+    }
+
+    pub fn emit(&self) -> color {
+        match self.material {
+            FragMaterial::DiffuseLight { color } => color,
+            _ => color::zeros(),
         }
     }
 }

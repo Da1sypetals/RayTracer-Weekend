@@ -1,3 +1,8 @@
+use super::{
+    errors::SerdeError,
+    materials::MaterialMap,
+    toml_common::{value_get_into, value_get_into_option},
+};
 use crate::{
     entity::{
         analytic::{
@@ -12,12 +17,6 @@ use crate::{
 };
 use std::{fs, sync::Arc};
 use toml::Value;
-
-use super::{
-    errors::SerdeError,
-    materials::MaterialMap,
-    toml_common::{value_get_into, value_get_into_option},
-};
 
 impl Scene {
     pub fn configured(path: &str) -> anyhow::Result<Self> {
@@ -48,6 +47,8 @@ impl From<Value> for Scene {
             .expect("Expected list [[entities]]")
             .as_array()
             .unwrap();
+
+        let background = value_get_into(&value, "background");
 
         let entities = ents
             .into_iter()
@@ -100,7 +101,10 @@ impl From<Value> for Scene {
             })
             .collect();
 
-        Self { entities }
+        Self {
+            entities,
+            background,
+        }
     }
 }
 
@@ -138,6 +142,8 @@ impl From<(Value, u32)> for AnimatedScene {
             .expect("Expected list [[entities]]")
             .as_array()
             .unwrap();
+
+        let background = value_get_into(&value, "background");
 
         let entities = ents
             .into_iter()
@@ -184,6 +190,6 @@ impl From<(Value, u32)> for AnimatedScene {
             })
             .collect();
 
-        Self::new(entities, n_step)
+        Self::new(entities, background, n_step)
     }
 }

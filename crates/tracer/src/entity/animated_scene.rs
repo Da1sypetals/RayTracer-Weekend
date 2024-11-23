@@ -1,9 +1,8 @@
+use super::{backgrounds::Background, traits::AnimatedEntity};
 use crate::{
     math::interval::Interval,
     tracer::ray::{hit::Hit, ray::Ray},
 };
-
-use super::traits::AnimatedEntity;
 use std::sync::Arc;
 
 #[derive(Debug)]
@@ -12,15 +11,21 @@ pub struct AnimatedScene {
     pub n_step: u32,
     pub i_step: u32,
     pub dt: f64,
+    pub background: Background,
 }
 
 impl AnimatedScene {
-    pub fn new(entities: Vec<Arc<dyn AnimatedEntity>>, n_step: u32) -> Self {
+    pub fn new(
+        entities: Vec<Arc<dyn AnimatedEntity>>,
+        background: Background,
+        n_step: u32,
+    ) -> Self {
         Self {
             entities,
             n_step,
             i_step: 0,
             dt: 1.0 / n_step as f64,
+            background,
         }
     }
 

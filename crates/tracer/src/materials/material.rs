@@ -54,8 +54,12 @@ pub enum Material {
     Texture {
         map: Arc<TextureMap>,
     },
+    DiffuseLight {
+        color: color,
+    },
 }
 
+/// Material on a specific hit.
 #[derive(Debug, Clone, Copy)]
 pub enum FragMaterial {
     Lambertian {
@@ -73,6 +77,9 @@ pub enum FragMaterial {
     Dielectric {
         eta: f64,
     },
+    DiffuseLight {
+        color: color,
+    },
 }
 
 impl TryFrom<Material> for FragMaterial {
@@ -86,6 +93,8 @@ impl TryFrom<Material> for FragMaterial {
                 Ok(FragMaterial::FuzzedMetal { albedo, fuzz })
             }
             Material::Dielectric { eta } => Ok(FragMaterial::Dielectric { eta }),
+
+            Material::DiffuseLight { color } => Ok(FragMaterial::DiffuseLight { color: color }),
             Material::PolarChecker { .. } => Err(MaterialError::CannotConvert {
                 mat_type: "polar checker".into(),
             }),

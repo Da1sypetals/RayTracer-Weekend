@@ -92,9 +92,7 @@ impl TracerAnimated {
                 color::zeros()
             }
         } else {
-            // Skybox
-            let t = 0.5 * (ray.dir.y + 1.0);
-            (1.0 - t) * color::new(1.0, 1.0, 1.0) + t * color::new(0.5, 0.7, 1.0)
+            self.scene.background.color(ray.dir)
         }
     }
 }

@@ -3,16 +3,20 @@ use crate::{
     tracer::ray::{hit::Hit, ray::Ray},
 };
 
-use super::traits::Entity;
+use super::{backgrounds::Background, traits::Entity};
 use std::sync::Arc;
 
 pub struct Scene {
     pub entities: Vec<Arc<dyn Entity>>,
+    pub background: Background,
 }
 
 impl Scene {
-    pub fn new(entities: Vec<Arc<dyn Entity>>) -> Self {
-        Self { entities }
+    pub fn new(entities: Vec<Arc<dyn Entity>>, background: Background) -> Self {
+        Self {
+            entities,
+            background,
+        }
     }
 }
 

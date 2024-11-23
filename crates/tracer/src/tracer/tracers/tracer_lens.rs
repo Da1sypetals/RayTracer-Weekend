@@ -80,17 +80,18 @@ impl TracerLens {
         }
 
         if let Some(hit) = self.scene.hit_by(ray) {
-            if let Some((attenuation, scattered_ray)) = hit.scatter(rng) {
+            let emitted = hit.emit();
+            let scattered = if let Some((attenuation, scattered_ray)) = hit.scatter(rng) {
                 // bounce from other light ray
                 attenuation.component_mul(&self.color_from_ray(scattered_ray, rng, depth + 1))
             } else {
                 // absorbed
                 color::zeros()
-            }
+            };
+
+            emitted + scattered
         } else {
-            // Skybox
-            let t = 0.5 * (ray.dir.y + 1.0);
-            (1.0 - t) * color::new(1.0, 1.0, 1.0) + t * color::new(0.5, 0.7, 1.0)
+            self.scene.background.color(ray.dir)
         }
     }
 }
