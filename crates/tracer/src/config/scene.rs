@@ -106,12 +106,12 @@ impl From<Value> for Scene {
                     let f = b + d - a;
                     let g = d + c - a;
                     vec![
-                        Arc::new(Parallelogram::new(Point::world(a),Point::world(b), Point::world(c), mat.clone())),
-                        Arc::new(Parallelogram::new(Point::world(a),Point::world(b), Point::world(d), mat.clone())),
-                        Arc::new(Parallelogram::new(Point::world(a),Point::world(c), Point::world(d), mat.clone())),
-                        Arc::new(Parallelogram::new(Point::world(b),Point::world(e), Point::world(f), mat.clone())),
-                        Arc::new(Parallelogram::new(Point::world(c),Point::world(e), Point::world(g), mat.clone())),
-                        Arc::new(Parallelogram::new(Point::world(d),Point::world(f), Point::world(g), mat.clone())),
+                        Arc::new(Parallelogram::new(Point::world(a), Point::world(b), Point::world(c), mat.clone())),
+                        Arc::new(Parallelogram::new(Point::world(a), Point::world(b), Point::world(d), mat.clone())),
+                        Arc::new(Parallelogram::new(Point::world(a), Point::world(c), Point::world(d), mat.clone())),
+                        Arc::new(Parallelogram::new(Point::world(b), Point::world(e), Point::world(f), mat.clone())),
+                        Arc::new(Parallelogram::new(Point::world(c), Point::world(e), Point::world(g), mat.clone())),
+                        Arc::new(Parallelogram::new(Point::world(d), Point::world(f), Point::world(g), mat.clone())),
                     ]
                 }
 

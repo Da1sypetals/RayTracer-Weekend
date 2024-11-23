@@ -16,6 +16,10 @@ name = "pink"
 type = "Lambertian"
 albedo = [0.84, 0.55, 0.67]
 
+[[materials]]
+name = "palepink"
+type = "Lambertian"
+albedo = [0.92, 0.67, 0.88]
 
 [[materials]]
 name = "green"

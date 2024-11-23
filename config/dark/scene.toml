@@ -6,6 +6,14 @@ type = "Pure"
 color = [0.1, 0.12, 0.3]
 
 [[entities]]
+type = "Box"
+material = "palepink"
+a = [2.0, -1.5, 0.5]
+b = [2.2, -1.5, 1.0]
+c = [2.5, -1.5, 0.3]
+d = [2.0, -0.5, 0.5]
+
+[[entities]]
 # light
 type = "Parallelogram"
 material = "light"
@@ -36,7 +44,7 @@ center = [4.0, 0.0, 0.0]
 radius = 1.5
 
 [[entities]]
-# left top
+# purple
 type = "Sphere"
 material = "fuzz_purple"
 center = [2.0, -0.9, -1.0]
