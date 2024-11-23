@@ -37,12 +37,16 @@ impl Entity for Box {
         ray: crate::tracer::ray::ray::Ray,
         interval: crate::math::interval::Interval,
     ) -> Option<crate::tracer::ray::hit::Hit> {
+        let mut nearest_hit = None;
+        let mut interval = interval;
+
         for face in &self.faces {
             if let Some(hit) = face.hit_by(ray, interval) {
-                return Some(hit);
+                interval = interval.clamp_high(hit.t);
+                nearest_hit = Some(hit);
             }
         }
-        None
+        nearest_hit
     }
 
     fn material(&self) -> crate::materials::material::Material {

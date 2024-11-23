@@ -1,5 +1,5 @@
 camera = "config/dark/camera.toml"
 scene = "config/dark/scene.toml"
 # sample per pixel
-spp = 64
+spp = 16
 out_path = "output.png"
