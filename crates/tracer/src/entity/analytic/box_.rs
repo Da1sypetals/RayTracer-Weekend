@@ -1,13 +1,5 @@
 use super::{commons::Point, parallelogram::Parallelogram};
-use crate::{
-    entity::traits::Entity,
-    helpers::types::{vec2, vec3},
-    materials::material::Material,
-};
-
-fn default_uv() -> vec2 {
-    vec2::new(0.0, 1.0)
-}
+use crate::{entity::traits::Entity, helpers::types::vec3, materials::material::Material};
 
 #[derive(Debug)]
 pub struct Box {
@@ -15,7 +7,7 @@ pub struct Box {
     pub b: vec3,
     pub c: vec3,
     pub d: vec3,
-    
+
     pub mat: Material,
 
     faces: [Parallelogram; 6],

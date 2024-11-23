@@ -1,18 +1,11 @@
-use serde::{Deserialize, Serialize};
-
+use super::commons::Point;
 use crate::{
     entity::traits::Entity,
-    helpers::types::{vec2, vec3},
+    helpers::types::vec3,
     materials::material::{FragMaterial, Material},
     math::panics::PanickingNormalize,
     tracer::ray::hit::{Hit, Normal},
 };
-
-use super::commons::Point;
-
-fn default_uv() -> vec2 {
-    vec2::new(0.0, 1.0)
-}
 
 #[derive(Debug)]
 pub struct Triangle {

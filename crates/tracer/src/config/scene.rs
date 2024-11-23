@@ -6,8 +6,8 @@ use super::{
 use crate::{
     entity::{
         analytic::{
-            box_::Box, commons::Point, parallelogram::Parallelogram, plane::Plane,
-            sphere::Sphere, triangle::Triangle,
+            box_::Box, parallelogram::Parallelogram, plane::Plane, sphere::Sphere,
+            triangle::Triangle,
         },
         animated::{plane::AnimatedPlane, sphere::AnimatedSphere},
         animated_scene::AnimatedScene,
