@@ -8,15 +8,10 @@ use crate::{
     tracer::ray::hit::{Hit, Normal},
 };
 
+use super::commons::Point;
+
 fn default_uv() -> vec2 {
     vec2::new(0.0, 1.0)
-}
-
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
-pub struct Point {
-    world: vec3,
-    #[serde(default = "default_uv")]
-    uv: vec2,
 }
 
 #[derive(Debug)]

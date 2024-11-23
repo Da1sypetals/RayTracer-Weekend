@@ -1,32 +1,12 @@
-use serde::{Deserialize, Serialize};
-
 use crate::{
     entity::traits::Entity,
-    helpers::types::{vec2, vec3},
+    helpers::types::vec3,
     materials::material::{FragMaterial, Material},
     math::panics::PanickingNormalize,
     tracer::ray::hit::{Hit, Normal},
 };
 
-fn default_uv() -> vec2 {
-    vec2::new(0.0, 1.0)
-}
-
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
-pub struct Point {
-    world: vec3,
-    #[serde(default = "default_uv")]
-    uv: vec2,
-}
-
-impl Point {
-    pub fn world(p: vec3) -> Self {
-        Self {
-            world: p,
-            uv: vec2::zeros(),
-        }
-    }
-}
+use super::commons::Point;
 
 #[derive(Debug)]
 pub struct Parallelogram {
