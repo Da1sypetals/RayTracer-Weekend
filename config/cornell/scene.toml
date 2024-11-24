@@ -1,0 +1,86 @@
+materials_path = "config/cornell/materials.toml"
+
+[background]
+type = "Pure"
+# color = [0.2, 0.24, 0.4]
+color = [0, 0, 0]
+
+[[entities]]
+# light
+type = "Parallelogram"
+material = "light"
+a = { world = [2.8, 5, -1.8] }
+b = { world = [4.6, 5, -1.8] }
+c = { world = [2.8, 5, 1.8] }
+
+[[entities]]
+# back wall
+type = "Plane"
+material = "palepink"
+point = [6, 0, 0]
+normal = [-1, 0, 0]
+
+
+[[entities]]
+# right wall
+type = "Plane"
+material = "grass"
+point = [0, 0, 4]
+normal = [0, 0, -1]
+
+[[entities]]
+# left wall
+type = "Plane"
+material = "mirror"
+point = [0, 0, -4]
+normal = [0, 0, 1]
+
+[[entities]]
+# top
+type = "Plane"
+material = "white"
+point = [0, 5.01, 0]
+normal = [0, -1, 0]
+
+[[entities]]
+# ground
+type = "Plane"
+material = "black"
+point = [0, 0, 0]
+normal = [0, 1, 0]
+
+
+########### bodies ##########
+
+[[entities]]
+# left purple
+type = "Box"
+material = "fuzz_purple"
+a = [4.0, 0, 0]
+b = [4.5, 0, 1.0]
+c = [5.0, 0, -0.5]
+d = [4.0, 4, 0]
+
+[[entities]]
+# left blue
+type = "Box"
+material = "sky"
+a = [0.5, 0, -1.5]
+c = [1.5, 0, -2.3]
+b = [1, 0, -1]
+d = [0.5, 1.5, -1]
+
+
+[[entities]]
+# right glass
+type = "Sphere"
+material = "glass"
+center = [4.0, 0.9, 1.6]
+radius = 0.9
+
+[[entities]]
+# right glass
+type = "Sphere"
+material = "bluegrid"
+center = [3.7, 1.2, -1.8]
+radius = 1.2

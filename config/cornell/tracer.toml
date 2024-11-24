@@ -1,0 +1,6 @@
+camera = "config/cornell/camera.toml"
+scene = "config/cornell/scene.toml"
+# sample per pixel
+spp = 64
+# spp = 64
+out_path = "coarse.png"
