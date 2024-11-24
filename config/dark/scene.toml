@@ -5,13 +5,13 @@ materials_path = "config/dark/materials.toml"
 type = "Pure"
 color = [0.2, 0.24, 0.4]
 
-# [[entities]]
-# type = "Box"
-# material = "palepink"
-# a = [2.0, -1.5, 0.5]
-# b = [2.2, -1.5, 1.0]
-# c = [2.5, -1.5, 0.3]
-# d = [2.0, -0.5, 0.5]
+[[entities]]
+type = "Box"
+material = "palepink"
+a = [6.0, -1.5, 5.5]
+b = [6.5, -1.5, 7.5]
+c = [8.0, -1.5, 6.0]
+d = [6.0, 1.5, 5.5]
 
 [[entities]]
 type = "SmokeBox"
