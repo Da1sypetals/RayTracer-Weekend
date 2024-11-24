@@ -57,11 +57,15 @@ pub enum Material {
     DiffuseLight {
         color: color,
     },
+    Smoke {
+        k: f64,
+    },
 }
 
 /// Material on a specific hit.
 #[derive(Debug, Clone, Copy)]
 pub enum FragMaterial {
+    Transparent,
     Lambertian {
         albedo: color,
     },
@@ -80,6 +84,7 @@ pub enum FragMaterial {
     DiffuseLight {
         color: color,
     },
+    Smoke,
 }
 
 impl TryFrom<Material> for FragMaterial {
@@ -101,6 +106,7 @@ impl TryFrom<Material> for FragMaterial {
             Material::Texture { .. } => Err(MaterialError::CannotConvert {
                 mat_type: "texture".into(),
             }),
+            Material::Smoke { .. } => Ok(FragMaterial::Smoke),
         }
     }
 }

@@ -1,7 +1,8 @@
 [[materials]]
 name = "light"
 type = "DiffuseLight"
-color = [3, 3, 3]
+# color = [3, 3, 3]
+color = [6, 6, 6]
 
 [[materials]]
 name = "blue"
@@ -17,6 +18,11 @@ type = "Lambertian"
 albedo = [0.84, 0.55, 0.67]
 
 [[materials]]
+name = "smoky"
+type = "Smoke"
+k = 4
+
+[[materials]]
 name = "palepink"
 type = "Lambertian"
 albedo = [0.92, 0.67, 0.88]
@@ -28,8 +34,9 @@ albedo = [0.1, 0.5, 0.2]
 
 [[materials]]
 name = "mirror_yellow"
-type = "Metal"
+type = "FuzzedMetal"
 albedo = [0.8, 0.6, 0.2]
+fuzz = 0.02
 
 [[materials]]
 name = "fuzz_purple"
@@ -40,10 +47,5 @@ fuzz = 0.1
 
 [[materials]]
 name = "transp"
-type = "Dielectric"
-eta = 0.75
-
-[[materials]]
-name = "transp_inner"
 type = "Dielectric"
 eta = 1.33

@@ -94,6 +94,10 @@ impl From<Value> for MaterialMap {
                         color: value_get_into(mat, "color"),
                     },
 
+                    "Smoke" => Material::Smoke {
+                        k: value_get_into(mat, "k"),
+                    },
+
                     _ => panic!("Unsupported material type: {}", mat_type),
                 };
 

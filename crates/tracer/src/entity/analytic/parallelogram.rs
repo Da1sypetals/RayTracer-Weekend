@@ -134,7 +134,6 @@ impl Entity for Parallelogram {
             None
         }
     }
-
 }
 
 impl Parallelogram {
@@ -150,7 +149,9 @@ impl Parallelogram {
                         albedo: map.query(uv.x, uv.y),
                     }
                 }
-                _ => unreachable!(),
+                _ => {
+                    unreachable!()
+                }
             },
         }
     }

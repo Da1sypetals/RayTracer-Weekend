@@ -3,23 +3,31 @@ materials_path = "config/dark/materials.toml"
 
 [background]
 type = "Pure"
-color = [0.1, 0.12, 0.3]
+color = [0.2, 0.24, 0.4]
+
+# [[entities]]
+# type = "Box"
+# material = "palepink"
+# a = [2.0, -1.5, 0.5]
+# b = [2.2, -1.5, 1.0]
+# c = [2.5, -1.5, 0.3]
+# d = [2.0, -0.5, 0.5]
 
 [[entities]]
-type = "Box"
-material = "palepink"
-a = [2.0, -1.5, 0.5]
-b = [2.2, -1.5, 1.0]
-c = [2.5, -1.5, 0.3]
-d = [2.0, -0.5, 0.5]
+type = "SmokeBox"
+material = "smoky"
+a = [2.0, -1.4, 0.5]
+b = [2.2, -1.4, 1.0]
+c = [2.5, -1.4, 0.3]
+d = [2.0, 0.0, 0.5]
 
 [[entities]]
 # light
 type = "Parallelogram"
 material = "light"
-a = { world = [3, 1.6, -1.5] }
-b = { world = [4, 1.6, -1.5] }
-c = { world = [3, 1.6, 1.5] }
+a = { world = [3, 2, -1.5] }
+b = { world = [4, 2, -1.5] }
+c = { world = [3, 2, 1.5] }
 
 [[entities]]
 # ground
@@ -54,15 +62,8 @@ radius = 0.4
 # right
 type = "Sphere"
 material = "transp"
-center = [3.0, 0.0, 3.5]
-radius = 1.5
-
-[[entities]]
-# right inner
-type = "Sphere"
-material = "transp_inner"
-center = [3.0, 0.0, 3.5]
-radius = 1.2
+center = [3.0, -0.7, 2]
+radius = 0.8
 
 [[entities]]
 # left

@@ -1,5 +1,4 @@
 use crate::{
-    materials::material::Material,
     math::interval::Interval,
     tracer::ray::{hit::Hit, ray::Ray},
 };

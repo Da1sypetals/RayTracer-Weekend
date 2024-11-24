@@ -6,8 +6,8 @@ use super::{
 use crate::{
     entity::{
         analytic::{
-            box_::Box, parallelogram::Parallelogram, plane::Plane, sphere::Sphere,
-            triangle::Triangle,
+            box_::Box, parallelogram::Parallelogram, plane::Plane, smoke_sphere::SmokeSphere,
+            somke_box::SmokeBox, sphere::Sphere, triangle::Triangle,
         },
         animated::{plane::AnimatedPlane, sphere::AnimatedSphere},
         animated_scene::AnimatedScene,
@@ -97,6 +97,17 @@ impl From<Value> for Scene {
                 )),
                 "Box" => {
                     Arc::new(Box::new(value_get_into(ent, "a"),
+                    value_get_into(ent, "b"),
+                    value_get_into(ent, "c"),
+                    value_get_into(ent, "d"), mat.clone()))
+                }
+                "SmokeSphere" => Arc::new(SmokeSphere::new(
+                    value_get_into(ent, "center"),
+                    value_get_into(ent, "radius"),
+                    mat.clone(),
+                )),
+                "SmokeBox" => {
+                    Arc::new(SmokeBox::new(value_get_into(ent, "a"),
                     value_get_into(ent, "b"),
                     value_get_into(ent, "c"),
                     value_get_into(ent, "d"), mat.clone()))

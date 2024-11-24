@@ -94,6 +94,17 @@ impl Hit {
                 Some((color::new(1.0, 1.0, 1.0), reflected_ray))
             }
             FragMaterial::DiffuseLight { .. } => None,
+            FragMaterial::Smoke => {
+                let dir = sample_on_sphere(rng);
+                Some((color::zeros(), Ray::new(self.pos, dir, IGNORE_HIT_EPS)))
+            }
+            FragMaterial::Transparent => {
+                // exactly the same ray, only origin pos is changed
+                Some((
+                    color::new(1.0, 1.0, 1.0),
+                    Ray::new(self.pos, self.in_dir, IGNORE_HIT_EPS),
+                ))
+            }
         }
     }
 
