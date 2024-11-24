@@ -32,7 +32,7 @@ impl From<Value> for MaterialMap {
             .unwrap();
 
         let map = mats
-            .into_iter()
+            .iter()
             .map(|mat| {
                 let name = mat
                     .get("name")

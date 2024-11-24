@@ -52,7 +52,7 @@ impl From<Value> for Scene {
         let background = value_get_into(&value, "background");
 
         let entities = ents
-            .into_iter()
+            .iter()
             .map(|ent| {
                 let ent_type = ent
                     .get("type")

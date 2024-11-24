@@ -7,7 +7,7 @@ pub trait RayDir {
 
 impl RayDir for vec3 {
     fn reflected_by(&self, normal: &Self) -> Self {
-        self - 2.0 * normal.dot(&self) * normal
+        self - 2.0 * normal.dot(self) * normal
     }
 
     fn refracted_by(&self, normal: &Self, eta_ratio: f64) -> Self {

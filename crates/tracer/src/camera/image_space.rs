@@ -21,6 +21,6 @@ impl ImageSpace {
     #[inline]
     // ### Pixel offset of given number of pixels in world coords
     pub fn pixel_offset(&self, ndx: f64, ndy: f64) -> vec3 {
-        (self.xdir * self.delta * ndx as f64) + (self.ydir * self.delta * ndy as f64)
+        (self.xdir * self.delta * ndx) + (self.ydir * self.delta * ndy)
     }
 }

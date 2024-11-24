@@ -1,7 +1,7 @@
 [[materials]]
 name = "blue"
 type = "Texture"
-map_path = "marble.png"
+map_path = "assets/marble.png"
 resolution = 1024
 
 [[materials]]

@@ -3,10 +3,6 @@ name = "raytrace"
 version = "0.1.0"
 edition = "2021"
 
-[[bin]]
-name = "raytrace-run"
-path = "src/main.rs"
-
 
 [dependencies]
 nalgebra-glm = "0.19.0"

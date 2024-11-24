@@ -7,7 +7,7 @@ use crate::{
     materials::material::FragMaterial,
     math::{
         distributions::{sample_on_sphere, sample_uniform_01},
-        panics::PanickingFloatMethods,
+        panics::{PanickingFloatMethods, PanickingNormalize},
         ray::{reflectance, RayDir},
     },
 };
@@ -62,7 +62,7 @@ impl Hit {
                 if let Normal::Outward(normal) = self.normal {
                     let dir = (self.in_dir.reflected_by(&normal)
                         + fuzz * sample_on_sphere(rng))
-                    .normalize();
+                    .p_normalize();
 
                     let scattered_ray = Ray::new(self.pos, dir, IGNORE_HIT_EPS);
 
