@@ -6,8 +6,10 @@ color = [6, 6, 6]
 
 [[materials]]
 name = "pink"
-type = "Lambertian"
+type = "FuzzedMetal"
 albedo = [0.84, 0.55, 0.67]
+# fuzz is between 0 and 1
+fuzz = 0.15
 
 [[materials]]
 name = "white"

@@ -59,7 +59,7 @@ material = "fuzz_purple"
 a = [4.0, 0, 0]
 b = [4.5, 0, 1.0]
 c = [5.0, 0, -0.5]
-d = [4.0, 4, 0]
+d = [4.0, 2.8, 0]
 
 [[entities]]
 # left blue
@@ -84,3 +84,10 @@ type = "Sphere"
 material = "bluegrid"
 center = [3.7, 1.2, -1.8]
 radius = 1.2
+
+[[entities]]
+# topping
+type = "Sphere"
+material = "pink"
+center = [4.375, 3.25, 0.125]
+radius = 0.45

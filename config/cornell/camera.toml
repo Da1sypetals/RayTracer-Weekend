@@ -1,8 +1,8 @@
 # in degrees
 defocus_angle = 0.8
 
-# resolution = [160, 90]
-resolution = [1280, 720]
+# resolution = [160, 120]
+resolution = [1200, 900]
 # in degrees
 yfov = 75
 viewport_distance = 4.0
