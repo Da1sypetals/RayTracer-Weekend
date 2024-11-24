@@ -1,3 +1,4 @@
+#![allow(unused)]
 use std::io::{self, Write};
 
 pub fn wait_for_input() {
