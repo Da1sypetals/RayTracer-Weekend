@@ -1,4 +1,4 @@
-materials_path = "config/cornell/materials.toml"
+materials_path = "config/litup/materials.toml"
 
 [background]
 type = "Pure"
@@ -7,11 +7,17 @@ color = [0, 0, 0]
 
 [[entities]]
 # light
-type = "Parallelogram"
+type = "Sphere"
 material = "light"
-a = { world = [2.8, 5, -1.8] }
-b = { world = [4.6, 5, -1.8] }
-c = { world = [2.8, 5, 1.8] }
+center = [6, 5.01, 4]
+radius = 1.2
+
+[[entities]]
+# light
+type = "Sphere"
+material = "light"
+center = [6, 0, -3]
+radius = 0.7
 
 [[entities]]
 # back wall

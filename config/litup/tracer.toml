@@ -1,0 +1,6 @@
+camera = "config/litup/camera.toml"
+scene = "config/litup/scene.toml"
+# sample per pixel
+# spp = 32
+spp = 96
+out_path = "litup.png"

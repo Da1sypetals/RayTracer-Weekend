@@ -8,7 +8,7 @@ use raytrace::{helpers::traits::Color, tracer::tracers::tracer_iter::TracerIter}
 mod debug;
 
 fn run() -> anyhow::Result<()> {
-    let tracer = TracerIter::configured("config/cornell/tracer.toml")?;
+    let tracer = TracerIter::configured("config/litup/tracer.toml")?;
 
     // ########################### Main work ###########################
     let mut img = RgbImage::new(tracer.cam.resolution.x, tracer.cam.resolution.y);
