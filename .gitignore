@@ -6,10 +6,11 @@
 # having git ignore such leftovers. You can use `.git/info/exclude` to
 # configure your local ignore list.
 
-/assets/
+/assets/*
 !/assets/nice.png
 !/assets/ballwall.png
 !/assets/litup.png
+!/assets/cornell.png
 
 ## File system
 .DS_Store
