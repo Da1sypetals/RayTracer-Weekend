@@ -7,6 +7,9 @@
 # configure your local ignore list.
 
 /assets/
+!/assets/nice.png
+!/assets/ballwall.png
+!/assets/litup.png
 
 ## File system
 .DS_Store
