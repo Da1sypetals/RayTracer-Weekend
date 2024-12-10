@@ -1,10 +1,9 @@
-use std::time::Instant;
-
 use image::RgbImage;
 use indicatif::ParallelProgressIterator;
 use rand::rngs::ThreadRng;
 use rayon::iter::ParallelIterator;
 use raytrace::{helpers::traits::Color, tracer::tracers::tracer_iter::TracerIter};
+use std::time::Instant;
 mod debug;
 
 fn run() -> anyhow::Result<()> {

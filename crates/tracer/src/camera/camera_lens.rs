@@ -37,6 +37,7 @@ impl LensCameraBuilder {
     }
 }
 
+#[derive(Clone)]
 pub struct LensCamera {
     /// Lens
     radius: f64,

@@ -1,5 +1,19 @@
-# Conventions
-1. xxx_at methods accpets (u32, u32) as image coords and computes according results.
+# Run
+
+## Binary
+```
+cargo run --bin iter
+```
+
+## Python Bindings
+- First make sure `maturin` is installed.
+
+```
+cd crates/py-raytrace
+maturin dev -r
+cd ../..
+python render.py
+```
 
 # Results
 

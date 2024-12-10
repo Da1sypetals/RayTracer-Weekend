@@ -1,5 +1,6 @@
 use crate::helpers::types::vec3;
 
+#[derive(Clone)]
 pub struct ImageSpace {
     pub orig: vec3,
     pub delta: f64,

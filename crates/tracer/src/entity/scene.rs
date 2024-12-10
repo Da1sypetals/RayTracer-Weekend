@@ -1,11 +1,11 @@
+use super::{backgrounds::Background, traits::Entity};
 use crate::{
     math::interval::Interval,
     tracer::ray::{hit::Hit, ray::Ray},
 };
-
-use super::{backgrounds::Background, traits::Entity};
 use std::sync::Arc;
 
+#[derive(Clone)]
 pub struct Scene {
     pub entities: Vec<Arc<dyn Entity>>,
     pub background: Background,
